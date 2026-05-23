@@ -6,12 +6,18 @@ import { onboardingSpacing } from "@/constants/onboarding-spacing";
 type AuthPrimaryButtonProps = {
   label: string;
   onPress: () => void;
+  disabled?: boolean;
 };
 
-export function AuthPrimaryButton({ label, onPress }: AuthPrimaryButtonProps) {
+export function AuthPrimaryButton({
+  label,
+  onPress,
+  disabled = false,
+}: AuthPrimaryButtonProps) {
   return (
     <Pressable
       onPress={onPress}
+      disabled={disabled}
       className="w-full items-center justify-center bg-foxi-orange active:opacity-90"
       style={{
         height: onboardingSpacing.buttonHeight,
@@ -21,6 +27,7 @@ export function AuthPrimaryButton({ label, onPress }: AuthPrimaryButtonProps) {
         shadowOpacity: 0.2,
         shadowRadius: 6,
         elevation: 8,
+        opacity: disabled ? 0.6 : 1,
       }}
     >
       <View className="flex-row items-center justify-center gap-3">

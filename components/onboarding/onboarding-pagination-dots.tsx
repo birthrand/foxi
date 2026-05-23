@@ -20,7 +20,10 @@ export function OnboardingPaginationDots({
   return (
     <View
       className="flex-row items-center justify-center"
-      style={{ gap, marginTop: specSized ? onboardingSpacing.secondaryToPagination : 12 }}
+      style={{
+        gap,
+        marginTop: specSized ? onboardingSpacing.secondaryToPagination : 40,
+      }}
     >
       {Array.from({ length: total }, (_, index) => {
         const isActive = index === currentIndex;

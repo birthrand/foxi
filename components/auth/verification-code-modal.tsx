@@ -1,6 +1,6 @@
-import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -14,6 +14,11 @@ import {
 type VerificationCodeModalProps = {
   visible: boolean;
   onClose: () => void;
+  title?: string;
+  description?: string;
+  onVerifyCode: (code: string) => Promise<void>;
+  isVerifying?: boolean;
+  errorMessage?: string;
 };
 
 const CODE_LENGTH = 6;
@@ -21,8 +26,12 @@ const CODE_LENGTH = 6;
 export function VerificationCodeModal({
   visible,
   onClose,
+  title = "Check your email",
+  description = "We sent you a verification code. Enter the 6-digit code below to continue.",
+  onVerifyCode,
+  isVerifying = false,
+  errorMessage,
 }: VerificationCodeModalProps) {
-  const router = useRouter();
   const inputRef = useRef<TextInput>(null);
   const [code, setCode] = useState("");
 
@@ -39,19 +48,16 @@ export function VerificationCodeModal({
     return () => clearTimeout(focusTimer);
   }, [visible]);
 
-  useEffect(() => {
-    if (code.length !== CODE_LENGTH) {
+  const handleChange = async (value: string) => {
+    const digitsOnly = value.replace(/\D/g, "").slice(0, CODE_LENGTH);
+    setCode(digitsOnly);
+
+    if (digitsOnly.length !== CODE_LENGTH || isVerifying) {
       return;
     }
 
     Keyboard.dismiss();
-    onClose();
-    router.replace("/");
-  }, [code, onClose, router]);
-
-  const handleChange = (value: string) => {
-    const digitsOnly = value.replace(/\D/g, "").slice(0, CODE_LENGTH);
-    setCode(digitsOnly);
+    await onVerifyCode(digitsOnly);
   };
 
   return (
@@ -86,15 +92,23 @@ export function VerificationCodeModal({
             className="mt-4 text-center text-[22px] text-[#2D2419]"
             style={{ fontFamily: "Poppins_700Bold" }}
           >
-            Check your email
+            {title}
           </Text>
           <Text
             className="mt-2 text-center text-[14px] leading-5 text-[#78716C]"
             style={{ fontFamily: "Poppins_400Regular" }}
           >
-            We sent you a verification code. Enter the 6-digit code below to
-            continue.
+            {description}
           </Text>
+
+          {errorMessage ? (
+            <Text
+              className="mt-3 text-center text-[13px] text-red-600"
+              style={{ fontFamily: "Poppins_400Regular" }}
+            >
+              {errorMessage}
+            </Text>
+          ) : null}
 
           <Pressable
             onPress={() => inputRef.current?.focus()}
@@ -103,7 +117,8 @@ export function VerificationCodeModal({
           >
             {Array.from({ length: CODE_LENGTH }).map((_, index) => {
               const digit = code[index] ?? "";
-              const isActive = index === code.length && code.length < CODE_LENGTH;
+              const isActive =
+                index === code.length && code.length < CODE_LENGTH;
 
               return (
                 <View
@@ -126,6 +141,12 @@ export function VerificationCodeModal({
             })}
           </Pressable>
 
+          {isVerifying ? (
+            <View className="mt-4 items-center">
+              <ActivityIndicator color="#ff7a00" />
+            </View>
+          ) : null}
+
           <TextInput
             ref={inputRef}
             value={code}
@@ -134,6 +155,7 @@ export function VerificationCodeModal({
             textContentType="oneTimeCode"
             autoComplete="one-time-code"
             maxLength={CODE_LENGTH}
+            editable={!isVerifying}
             style={{
               position: "absolute",
               opacity: 0,

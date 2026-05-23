@@ -7,10 +7,15 @@ type AuthFormCardProps = ViewProps & {
   children: ReactNode;
 };
 
-export function AuthFormCard({ children, style, ...props }: AuthFormCardProps) {
+export function AuthFormCard({
+  children,
+  style,
+  className,
+  ...props
+}: AuthFormCardProps) {
   return (
     <View
-      className="bg-white"
+      className={className ? `bg-white ${className}` : "bg-white"}
       style={[
         {
           marginTop: authSpacing.mascotToCard,
