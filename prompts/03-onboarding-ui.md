@@ -1,5 +1,8 @@
 Read AGENTS.md first and follow it strictly.
 
-Implement the onboarding screen as shown in the attached design exactly as is using assets from the assets folder. Add a navigation link on the home route (/) to open the onboarding screen. Use the mascot-logo image for the top logo alongside the app name "lingua”, and do not include the pagination dots.
+Implement the onboarding screen as shown in the attached designs exactly as is using assets from the assets folder. Add a navigation link on the home route (/) to open the onboarding screen. Use the mascot-logo image for the top logo alongside the app name "foxi”, and do not include the pagination dots.
 
-@prompt_material/02-onboarding-screen.png
+@prompt_material/onboarding/onboarding-ui-1.png
+@prompt_material/onboarding/onboarding-ui-2.png
+@prompt_material/onboarding/onboarding-ui-3.png
+@prompt_material/onboarding/onboarding-ui-4.png
