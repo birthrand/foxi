@@ -53,9 +53,13 @@ export default function OnboardingScreen() {
     syncActiveIndex(event.nativeEvent.contentOffset.x);
   };
 
+  const primaryLabel =
+    activeSlide.primaryButtonLabel ??
+    (isLastSlide ? FINAL_PRIMARY_LABEL : DEFAULT_PRIMARY_LABEL);
+
   const goToNextSlide = () => {
     if (isLastSlide) {
-      router.replace("/");
+      router.replace("/sign-up");
       return;
     }
 
@@ -67,10 +71,6 @@ export default function OnboardingScreen() {
   const handleExploreOnOwn = () => {
     router.replace("/");
   };
-
-  const primaryLabel =
-    activeSlide.primaryButtonLabel ??
-    (isLastSlide ? FINAL_PRIMARY_LABEL : DEFAULT_PRIMARY_LABEL);
 
   const secondaryLabel =
     activeSlide.secondaryLinkLabel ?? DEFAULT_SECONDARY_LABEL;

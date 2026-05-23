@@ -1,3 +1,6 @@
+import mascotLogIn from "@/assets/images/auth/mascot-log-in.png";
+import mascotLogIn1 from "@/assets/images/auth/mascot-log-in-1.png";
+import mascotSignUp from "@/assets/images/auth/mascot-sign-up.png";
 import icon from "@/assets/images/icon.png";
 import mascotLogo1OrangeFist from "@/assets/images/mascot-logo-1-orange-fist.png";
 import mascotLogo1Orange from "@/assets/images/mascot-logo-1-orange.png";
@@ -13,6 +16,9 @@ import splashIcon from "@/assets/images/splash-icon.png";
 export const images = {
   icon,
   splashIcon,
+  mascotSignUp,
+  mascotLogIn,
+  mascotLogIn1,
   mascotLogo,
   mascotLogo1,
   mascotLogo2,
