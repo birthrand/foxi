@@ -1,0 +1,22 @@
+@layer theme {
+  @theme {
+  /* Primary */
+  --color-foxi-orange: #ff7a00;
+  --color-foxi-blue: #1e3a8a;
+  --color-warm-cream: #fff3e0;
+  --color-deep-navy: #0d132b;
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-warning: #fbbf24;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Neutrals */
+  --color-text: #0f172a;
+  --color-secondary: #64748b;
+  --color-surface: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-background: #ffffff;
+  }
+}
