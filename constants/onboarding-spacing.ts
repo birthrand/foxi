@@ -22,7 +22,7 @@ export const onboardingSpacing = {
   titleToSubtitleTight: 0,
   subtitleToMascot: onboardingSpace.xl,
   mascotToButton: onboardingSpace.xxl,
-  buttonToSecondary: onboardingSpace.md,
+  buttonToSecondary: onboardingSpace.sm,
   secondaryToPagination: onboardingSpace.md,
   paginationToBottom: onboardingSpace.md,
   badgeHeight: 44,

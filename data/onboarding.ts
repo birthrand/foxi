@@ -37,7 +37,7 @@ export const onboardingSlides: OnboardingSlide[] = [
     illustration: images.mascotLogo1Orange,
     illustrationVariant: "centered",
     primaryButtonLabel: "Let's Get Started",
-    secondaryLinkLabel: "I'll explore on my own",
+    secondaryLinkLabel: "I already have an account",
   },
   {
     id: "personalize",
@@ -53,7 +53,7 @@ export const onboardingSlides: OnboardingSlide[] = [
     illustration: images.mascotOnboarding3,
     illustrationVariant: "wide",
     primaryButtonLabel: "Let's Get Started",
-    secondaryLinkLabel: "I'll explore on my own",
+    secondaryLinkLabel: "I already have an account",
   },
   {
     id: "ready",
@@ -67,6 +67,6 @@ export const onboardingSlides: OnboardingSlide[] = [
     illustrationVariant: "celebration",
     showProgressCard: true,
     primaryButtonLabel: "Let's Get Started",
-    secondaryLinkLabel: "I'll explore on my own",
+    secondaryLinkLabel: "I already have an account",
   },
 ];

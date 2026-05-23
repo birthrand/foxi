@@ -17,8 +17,7 @@ import { onboardingSpacing } from "@/constants/onboarding-spacing";
 import { onboardingSlides } from "@/data/onboarding";
 
 const ONBOARDING_BACKGROUND = "#FFFBF5";
-const DEFAULT_PRIMARY_LABEL = "Continue";
-const FINAL_PRIMARY_LABEL = "Start learning";
+const DEFAULT_PRIMARY_LABEL = "Let's Get Started";
 const DEFAULT_SECONDARY_LABEL = "I already have an account";
 
 export default function OnboardingScreen() {
@@ -28,7 +27,6 @@ export default function OnboardingScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const activeSlide = onboardingSlides[activeIndex];
-  const isLastSlide = activeIndex === onboardingSlides.length - 1;
 
   const syncActiveIndex = useCallback(
     (offsetX: number) => {
@@ -53,24 +51,16 @@ export default function OnboardingScreen() {
     syncActiveIndex(event.nativeEvent.contentOffset.x);
   };
 
-  const goToNextSlide = () => {
-    if (isLastSlide) {
-      router.replace("/");
-      return;
-    }
-
-    const nextIndex = activeIndex + 1;
-    listRef.current?.scrollToIndex({ index: nextIndex, animated: true });
-    setActiveIndex(nextIndex);
-  };
-
-  const handleExploreOnOwn = () => {
-    router.replace("/");
-  };
-
   const primaryLabel =
-    activeSlide.primaryButtonLabel ??
-    (isLastSlide ? FINAL_PRIMARY_LABEL : DEFAULT_PRIMARY_LABEL);
+    activeSlide.primaryButtonLabel ?? DEFAULT_PRIMARY_LABEL;
+
+  const handleGetStarted = () => {
+    router.replace("/sign-up");
+  };
+
+  const handleSignIn = () => {
+    router.replace("/sign-in");
+  };
 
   const secondaryLabel =
     activeSlide.secondaryLinkLabel ?? DEFAULT_SECONDARY_LABEL;
@@ -103,12 +93,13 @@ export default function OnboardingScreen() {
             paddingBottom: onboardingSpacing.paginationToBottom,
           }}
         >
-          <OnboardingPrimaryButton label={primaryLabel} onPress={goToNextSlide} />
+          <OnboardingPrimaryButton
+            label={primaryLabel}
+            onPress={handleGetStarted}
+          />
           <OnboardingAccountLink
             label={secondaryLabel}
-            onPress={
-              activeSlide.secondaryLinkLabel ? handleExploreOnOwn : undefined
-            }
+            onPress={handleSignIn}
           />
           <OnboardingPaginationDots
             total={onboardingSlides.length}
