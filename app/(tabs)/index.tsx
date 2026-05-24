@@ -16,6 +16,7 @@ import {
   getHomeScreenData,
   getLanguageSubtitle,
 } from "@/lib/home-data";
+import { getCurrentLessonIdForLanguage } from "@/lib/language-progress";
 import { useSelectedLanguageCode } from "@/store/language-store";
 import {
   useLearningProgressHydrated,
@@ -96,6 +97,24 @@ export default function HomeScreen() {
     : undefined;
 
   const handleContinueLearning = () => {
+    if (!selectedLanguageCode) {
+      router.push("/learn");
+      return;
+    }
+
+    const lessonId = getCurrentLessonIdForLanguage(
+      selectedLanguageCode,
+      completedLessonIds,
+    );
+
+    if (lessonId) {
+      router.push({
+        pathname: "/lesson/[id]",
+        params: { id: lessonId },
+      });
+      return;
+    }
+
     router.push("/learn");
   };
 

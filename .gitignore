@@ -34,6 +34,12 @@ yarn-error.*
 .env
 .env*.local
 
+# Python vision agent
+vision-agent/.venv/
+vision-agent/__pycache__/
+vision-agent/**/__pycache__/
+vision-agent/.uv-cache/
+
 # typescript
 *.tsbuildinfo
 

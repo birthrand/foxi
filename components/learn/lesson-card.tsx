@@ -62,15 +62,21 @@ function StatusAction({ item }: { item: LessonListItem }) {
 }
 
 export function LessonCard({ item, onPress }: LessonCardProps) {
-  const { lesson, status, progressPercent } = item;
+  const { lesson, status, progressPercent, completedExchanges, totalExchanges } =
+    item;
   const isLocked = status === "locked";
+  const isCompleted = status === "completed";
   const isActive = status === "in_progress";
+  const hasConversationProgress =
+    isActive && totalExchanges > 0 && completedExchanges > 0;
 
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${lesson.title}. ${lesson.description}`}
-      onPress={onPress}
+      accessibilityState={{ disabled: isLocked }}
+      onPress={isLocked ? undefined : onPress}
+      disabled={isLocked}
       className="active:opacity-90"
       style={{
         borderRadius: learnSpacing.lessonCardRadius,
@@ -140,7 +146,11 @@ export function LessonCard({ item, onPress }: LessonCardProps) {
               opacity: isLocked ? 0.55 : 1,
             }}
           >
-            {lesson.estimatedMinutes} min · {lesson.xpReward} XP
+            {isCompleted
+              ? `Completed · tap to practice again`
+              : hasConversationProgress
+                ? `${completedExchanges}/${totalExchanges} exchanges · ${lesson.estimatedMinutes} min`
+                : `${lesson.estimatedMinutes} min · ${lesson.xpReward} XP`}
           </Text>
 
           {isActive ? (

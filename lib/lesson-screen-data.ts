@@ -1,4 +1,5 @@
 import type {
+  Lesson,
   LessonWithLanguage,
   Phrase,
   VocabularyItem,
@@ -44,13 +45,14 @@ function getAiPrompt(phrase: Phrase, languageName: string): string {
 }
 
 function buildConversationExchanges(
-  lesson: LessonWithLanguage,
+  lesson: Pick<Lesson, "phrases" | "vocabulary">,
+  languageName: string,
 ): ConversationExchange[] {
   const phraseExchanges = lesson.phrases
     .slice(0, MAX_CONVERSATION_EXCHANGES)
     .map((phrase) => ({
       id: phrase.id,
-      aiPrompt: getAiPrompt(phrase, lesson.language.name),
+      aiPrompt: getAiPrompt(phrase, languageName),
       userResponse: phrase.translation,
       hint: phrase.text,
     }));
@@ -61,16 +63,23 @@ function buildConversationExchanges(
 
   return lesson.vocabulary.slice(0, MAX_CONVERSATION_EXCHANGES).map((item) => ({
     id: item.id,
-    aiPrompt: `Say "${item.translation}" in ${lesson.language.name}.`,
+    aiPrompt: `Say "${item.translation}" in ${languageName}.`,
     userResponse: item.translation,
     hint: item.word,
   }));
 }
 
+export function getTotalConversationExchanges(
+  lesson: Pick<Lesson, "phrases" | "vocabulary">,
+  languageName: string,
+): number {
+  return buildConversationExchanges(lesson, languageName).length;
+}
+
 export function getLessonScreenData(
   lesson: LessonWithLanguage,
 ): LessonScreenData {
-  const exchanges = buildConversationExchanges(lesson);
+  const exchanges = buildConversationExchanges(lesson, lesson.language.name);
 
   return {
     headerTitle: "AI Teacher",
@@ -81,7 +90,7 @@ export function getLessonScreenData(
       description:
         "Keep practicing a little every day and you'll be speaking with confidence!",
     }),
-    speakInstruction: `Hold to talk`,
+    speakInstruction: `Tap the microphone to pause your live lesson`,
     exchanges,
     totalExchanges: exchanges.length,
     todaysWords: [...lesson.vocabulary],

@@ -30,7 +30,7 @@ function buildAiTeacherPrompt(
       `Only use these phrases: ${phraseTexts.join(" | ")}.`,
       "Speak mostly in English. Introduce target-language words slowly with translations.",
       "Use short, natural sentences with contractions and gentle encouragement.",
-      "Listen to the student, adapt your next line, and ask them to repeat or try again.",
+      "Listen to the student. If they are wrong, correct them and ask them to try again. After a correct attempt, acknowledge briefly and move on without cheerleading.",
       "Keep each reply to one or two conversational sentences.",
       "Do not teach unrelated topics or switch to other languages.",
     ].join(" "),
