@@ -73,7 +73,11 @@ export function CustomTabBar({ state, navigation }: BottomTabBarProps) {
         paddingBottom: Math.max(insets.bottom - 36, 4),
         borderTopWidth: 1,
         borderTopColor: "#e5e7eb",
-        boxShadow: "0 -4px 16px rgba(13, 19, 43, 0.06)",
+        shadowColor: "`#0d132b`",
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 16,
+        elevation: 8,
       }}
     >
       <View className="relative flex-row">
