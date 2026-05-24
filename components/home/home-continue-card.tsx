@@ -25,7 +25,7 @@ export function HomeContinueCard({ item, onPress }: HomeContinueCardProps) {
         accessibilityRole="button"
         accessibilityLabel={`Continue learning ${languageName}, ${levelLabel} ${unitTitle}`}
         onPress={onPress}
-        className="active:opacity-95"
+        className="active:opacity-65"
         style={{
           marginTop: homeSpacing.statsToContinue,
           borderRadius: homeSpacing.cardRadius,

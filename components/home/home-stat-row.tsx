@@ -1,4 +1,3 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Text, View } from "react-native";
 
@@ -60,10 +59,10 @@ export function HomeStatRow({ stats }: HomeStatRowProps) {
 
       <View
         style={{ marginLeft: homeSpacing.statStreakOffset }}
-        className="items-start"
+        className="items-center"
       >
         <View className="flex-row items-center">
-          <Ionicons name="flame" size={22} color="#ff7a00" />
+          {/* <Ionicons name="flame" size={22} color="#ff7a00" /> */}
           <Text
             className="text-foxi-orange"
             style={{
