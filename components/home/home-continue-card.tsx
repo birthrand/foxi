@@ -54,16 +54,6 @@ export function HomeContinueCard({ item, onPress }: HomeContinueCardProps) {
             paddingRight: homeSpacing.continueContentPaddingRight,
           }}
         >
-          {/* <Text
-            className="mt-2 text-white"
-            style={{
-              fontFamily: "Poppins_500Medium",
-              fontSize: 13,
-              lineHeight: 16,
-            }}
-          >
-            Continue learning
-          </Text> */}
 
           <Text
             className="text-white"

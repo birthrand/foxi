@@ -4,7 +4,7 @@ import type { LessonTranscriptMessage } from "@/types/lesson-transcript";
 const MIN_USER_RESPONSE_LENGTH = 2;
 
 const AFFIRMATION_PATTERN =
-  /\b(that's right|that is right|that sounds right|exactly right|you got it|correct|perfect|precisely|exactly)\b/i;
+  /\b(that's right|that is right|that sounds right|exactly right|you got it|correct|perfect|precisely|exactly|good|okay|ok|alright|right|nice|well done|great job|there you go|sounds good|yes)\b/i;
 
 const RETRY_PATTERN =
   /\b(try again|give it another|not quite|almost there|listen again|one more time|let's try|repeat after|say it again|not exactly|close but|not quite right|give it another go)\b/i;
@@ -30,17 +30,40 @@ function tokenizeForMatch(text: string): string[] {
   return normalizeMatchText(text).split(" ").filter(Boolean);
 }
 
+function isCorrectionMessage(text: string): boolean {
+  return RETRY_PATTERN.test(normalizeMatchText(text));
+}
+
 function isAffirmationMessage(text: string): boolean {
   const normalized = normalizeMatchText(text);
   if (!normalized || normalized.length < 3) {
     return false;
   }
 
-  if (RETRY_PATTERN.test(normalized)) {
+  if (isCorrectionMessage(text)) {
     return false;
   }
 
   return AFFIRMATION_PATTERN.test(normalized);
+}
+
+function acceptsUserAttempt(aiText: string): boolean {
+  const normalized = normalizeMatchText(aiText);
+  if (!normalized || normalized.length < 3) {
+    return false;
+  }
+
+  if (isCorrectionMessage(aiText)) {
+    return false;
+  }
+
+  return (
+    isAffirmationMessage(aiText) ||
+    isLessonClosingMessage(aiText) ||
+    /\b(now let|next up|next phrase|try saying|let's try|let's practice|one more|moving on)\b/i.test(
+      normalized,
+    )
+  );
 }
 
 function isLessonClosingMessage(text: string): boolean {
@@ -109,17 +132,13 @@ function applyTranscriptMessage(
   exchanges: ConversationExchange[] | undefined,
 ): ExchangeScanState {
   if (message.role === "ai") {
-    if (
-      state.userSpokeSincePrompt &&
-      state.lastUserText &&
-      isAffirmationMessage(message.text)
-    ) {
+    if (state.userSpokeSincePrompt && state.lastUserText) {
       const exchange = exchanges?.[state.completed];
       const attemptMatches = exchange
         ? phraseMatchesExchange(state.lastUserText, exchange)
         : true;
 
-      if (attemptMatches) {
+      if (attemptMatches && acceptsUserAttempt(message.text)) {
         return {
           completed: state.completed + 1,
           awaitingUserResponse: true,

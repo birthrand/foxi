@@ -116,6 +116,42 @@ def _format_goals(context: LessonContext) -> str:
     return "; ".join(context.goals)
 
 
+def _practice_items(context: LessonContext) -> list[tuple[str, str]]:
+    """Mirror app exchange order: phrases first, then vocabulary (max 5)."""
+    items = [(phrase.text, phrase.translation) for phrase in context.phrases]
+    max_items = 5
+
+    if len(items) < max_items:
+        for word in context.vocabulary:
+            if len(items) >= max_items:
+                break
+            items.append((word.word, word.translation))
+
+    return items[:max_items]
+
+
+def _format_practice_sequence(context: LessonContext) -> str:
+    items = _practice_items(context)
+    if not items:
+        return (
+            "Guide the student through several short speaking turns before closing."
+        )
+
+    lines = [
+        f"{index}. {text} ({translation})"
+        for index, (text, translation) in enumerate(items, start=1)
+    ]
+    count = len(items)
+
+    return (
+        f"You must guide the student through exactly {count} speaking items in this "
+        f"order before the closing message:\n"
+        + "\n".join(lines)
+        + f"\nDo not say the lesson is complete until all {count} items are practiced "
+        "successfully."
+    )
+
+
 def build_teacher_instructions(context: LessonContext) -> str:
     """English-speaking tutor that teaches the target language through English."""
     extra = ""
@@ -137,6 +173,7 @@ Today's lesson: "{context.lesson_title}"
 Lesson goal: {_format_goals(context)}
 {_format_vocabulary(context)}
 {_format_phrases(context)}
+{_format_practice_sequence(context)}
 
 Rules:
 - Keep replies to one or two short, conversational sentences.
@@ -146,7 +183,9 @@ Rules:
 - If the student says the wrong word or phrase, calmly correct them and ask them to try again. Do not praise incorrect answers or move on until they say the target phrase correctly.
 - For a correct attempt, use a brief neutral acknowledgment (for example: "That's right", "Good", "Okay") and move on. Do not use enthusiastic praise during practice.
 - Reserve warmer congratulations for the final closing message only, after the last phrase is correct.
-- After the student successfully practices the last phrase for this lesson, give a brief closing message: congratulate them, name one thing they did well, and say the lesson is complete. Do not ask another practice question after that.
+- Work through every item in the practice sequence above, in order. Only move to the next item after the student says the current target word or phrase correctly.
+- After the student successfully practices the final item in the sequence, give a brief closing message: congratulate them, name one thing they did well, and say the lesson is complete. Do not ask another practice question after that.
+- Never say the lesson is complete until the final practice item is correct.
 - Do not use markdown, bullet lists, or special formatting in speech.{opening_rule}{extra}"""
 
 

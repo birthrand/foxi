@@ -6,8 +6,12 @@ import {
 } from "@stream-io/video-react-native-sdk";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { useLessonAudioOutputRouting } from "@/hooks/use-lesson-audio-output-routing";
 import { useTeacherSpeakingMicGuard } from "@/hooks/use-teacher-speaking-mic-guard";
-import { routeLessonAudioToSpeaker } from "@/lib/lesson-audio-output";
+import {
+  resetLessonAudioOutputState,
+  routeLessonAudioOutput,
+} from "@/lib/lesson-audio-output";
 import { createStreamAudioCall, fetchStreamToken } from "@/lib/stream-api";
 import type { CreateStreamCallPayload, StreamCallSessionResponse } from "@/lib/stream";
 import type { StreamAudioLessonStatus } from "@/types/stream";
@@ -135,6 +139,7 @@ export function useStreamAudioLesson({
     setCallSession(null);
     setStreamUserId(null);
     connectInFlightRef.current = false;
+    resetLessonAudioOutputState();
     await cleanupCall();
     await cleanupClient();
   }, [cleanupCall, cleanupClient]);
@@ -147,7 +152,7 @@ export function useStreamAudioLesson({
 
     try {
       if (status === "muted") {
-        routeLessonAudioToSpeaker();
+        await routeLessonAudioOutput();
         setStatus("joined");
       } else {
         await activeCall.microphone.disable();
@@ -162,6 +167,9 @@ export function useStreamAudioLesson({
 
   const isLive = status === "joined";
   const isMicMuted = status === "muted";
+  const isAudioRoutingActive = status === "joined" || status === "muted";
+
+  useLessonAudioOutputRouting({ enabled: isAudioRoutingActive });
 
   const { isTeacherSpeaking } = useTeacherSpeakingMicGuard({
     call,
@@ -283,7 +291,7 @@ export function useStreamAudioLesson({
           joinedMuted = true;
         }
 
-        routeLessonAudioToSpeaker();
+        await routeLessonAudioOutput();
 
         setCall(nextCall);
         setStatus(joinedMuted ? "muted" : "joined");
@@ -309,6 +317,7 @@ export function useStreamAudioLesson({
     return () => {
       cancelled = true;
       connectInFlightRef.current = false;
+      resetLessonAudioOutputState();
       void cleanupCallRef.current();
       void cleanupClientRef.current();
     };
