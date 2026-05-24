@@ -28,6 +28,7 @@ export default function RootLayout() {
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="lesson/[id]" />
         <Stack.Screen name="language-selection" />
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="(auth)" />

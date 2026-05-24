@@ -10,6 +10,7 @@ import { HomeHeader } from "@/components/home/home-header";
 import { HomeRecentVocabularySection } from "@/components/home/home-recent-vocabulary-section";
 import { HomeStatRow } from "@/components/home/home-stat-row";
 import { homeSpacing } from "@/constants/home-spacing";
+import { getLanguageByCode } from "@/data/languages";
 import {
   getGreetingForTime,
   getHomeScreenData,
@@ -90,6 +91,13 @@ export default function HomeScreen() {
   const subtitle = selectedLanguageCode
     ? getLanguageSubtitle(selectedLanguageCode)
     : "Let's keep your language journey going";
+  const selectedLanguageName = selectedLanguageCode
+    ? getLanguageByCode(selectedLanguageCode)?.name
+    : undefined;
+
+  const handleContinueLearning = () => {
+    router.push("/learn");
+  };
 
   const handleSeeAllFocus = () => {
     router.push("/learn");
@@ -97,6 +105,10 @@ export default function HomeScreen() {
 
   const handleSeeAllVocabulary = () => {
     router.push("/learn");
+  };
+
+  const handleChangeLanguage = () => {
+    router.push("/language-selection");
   };
 
   if (!isUserLoaded || !hasProgressHydrated || !homeData) {
@@ -127,9 +139,14 @@ export default function HomeScreen() {
           greeting={greeting}
           userName={userName}
           subtitle={subtitle}
+          languageName={selectedLanguageName}
+          onChangeLanguage={handleChangeLanguage}
         />
         <HomeStatRow stats={homeData.stats} />
-        <HomeContinueCard item={homeData.continueLearning} />
+        <HomeContinueCard
+          item={homeData.continueLearning}
+          onPress={handleContinueLearning}
+        />
         <HomeFocusSection
           items={homeData.todaysFocus}
           onSeeAll={handleSeeAllFocus}

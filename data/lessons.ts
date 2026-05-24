@@ -1,5 +1,5 @@
 import { getLanguageByCode } from "@/data/languages";
-import { getUnitById, getUnitsByLanguageCode } from "@/data/units";
+import { getUnitsByLanguageCode } from "@/data/units";
 import type {
   AiTeacherPrompt,
   LanguageCode,
@@ -54,15 +54,25 @@ export const lessons: Lesson[] = [
     number: 1,
     title: "Hello & Goodbye",
     subtitle: "Your first Spanish greetings",
-    description: "Learn how to say hello and goodbye in common everyday situations.",
+    description: "Say hello and goodbye in Spanish.",
     goal: "Greet someone and say goodbye politely in Spanish.",
     goals: [
       { id: "es-l1-g1", label: "Say hello in formal and informal settings" },
       { id: "es-l1-g2", label: "Say goodbye naturally" },
     ],
     vocabulary: [
-      { id: "es-l1-v1", word: "hola", translation: "hello", phonetic: "OH-lah" },
-      { id: "es-l1-v2", word: "adiós", translation: "goodbye", phonetic: "ah-DYOHS" },
+      {
+        id: "es-l1-v1",
+        word: "hola",
+        translation: "hello",
+        phonetic: "OH-lah",
+      },
+      {
+        id: "es-l1-v2",
+        word: "adiós",
+        translation: "goodbye",
+        phonetic: "ah-DYOHS",
+      },
       {
         id: "es-l1-v3",
         word: "buenos días",
@@ -118,7 +128,7 @@ export const lessons: Lesson[] = [
     number: 2,
     title: "Please & Thank You",
     subtitle: "Polite words that go a long way",
-    description: "Use por favor and gracias to sound friendly and respectful.",
+    description: "Use please and thank you naturally.",
     goal: "Ask for something politely and express thanks in Spanish.",
     goals: [
       { id: "es-l2-g1", label: "Say please when asking for something" },
@@ -131,7 +141,12 @@ export const lessons: Lesson[] = [
         translation: "please",
         phonetic: "por fah-VOR",
       },
-      { id: "es-l2-v2", word: "gracias", translation: "thank you", phonetic: "GRAH-see-ahs" },
+      {
+        id: "es-l2-v2",
+        word: "gracias",
+        translation: "thank you",
+        phonetic: "GRAH-see-ahs",
+      },
       {
         id: "es-l2-v3",
         word: "de nada",
@@ -186,26 +201,48 @@ export const lessons: Lesson[] = [
     number: 3,
     title: "My Name Is…",
     subtitle: "Introduce yourself with confidence",
-    description: "Share your name and ask someone theirs in a simple conversation.",
+    description: "Introduce yourself and ask names.",
     goal: "Introduce yourself and ask for someone's name in Spanish.",
     goals: [
       { id: "es-l3-g1", label: "Say your name using Me llamo" },
       { id: "es-l3-g2", label: "Ask ¿Cómo te llamas?" },
     ],
     vocabulary: [
-      { id: "es-l3-v1", word: "me llamo", translation: "my name is", phonetic: "meh YAH-moh" },
+      {
+        id: "es-l3-v1",
+        word: "me llamo",
+        translation: "my name is",
+        phonetic: "meh YAH-moh",
+      },
       {
         id: "es-l3-v2",
         word: "¿Cómo te llamas?",
         translation: "What's your name?",
         phonetic: "KOH-moh teh YAH-mahs",
       },
-      { id: "es-l3-v3", word: "mucho gusto", translation: "nice to meet you", phonetic: "MOO-choh GOOS-toh" },
+      {
+        id: "es-l3-v3",
+        word: "mucho gusto",
+        translation: "nice to meet you",
+        phonetic: "MOO-choh GOOS-toh",
+      },
     ],
     phrases: [
-      { id: "es-l3-p1", text: "Me llamo Alex.", translation: "My name is Alex." },
-      { id: "es-l3-p2", text: "¿Cómo te llamas?", translation: "What's your name?" },
-      { id: "es-l3-p3", text: "Mucho gusto.", translation: "Nice to meet you." },
+      {
+        id: "es-l3-p1",
+        text: "Me llamo Alex.",
+        translation: "My name is Alex.",
+      },
+      {
+        id: "es-l3-p2",
+        text: "¿Cómo te llamas?",
+        translation: "What's your name?",
+      },
+      {
+        id: "es-l3-p3",
+        text: "Mucho gusto.",
+        translation: "Nice to meet you.",
+      },
     ],
     activities: [
       {
@@ -250,7 +287,7 @@ export const lessons: Lesson[] = [
     number: 4,
     title: "Numbers 1–10",
     subtitle: "Count with confidence",
-    description: "Learn to count from one to ten and use numbers in simple sentences.",
+    description: "Count from one to ten in Spanish.",
     goal: "Count from 1 to 10 and recognize numbers in basic Spanish phrases.",
     goals: [
       { id: "es-l4-g1", label: "Count from uno to diez" },
@@ -263,8 +300,16 @@ export const lessons: Lesson[] = [
       { id: "es-l4-v4", word: "diez", translation: "ten", phonetic: "dee-EHS" },
     ],
     phrases: [
-      { id: "es-l4-p1", text: "Uno, dos, tres.", translation: "One, two, three." },
-      { id: "es-l4-p2", text: "Tengo dos hermanos.", translation: "I have two siblings." },
+      {
+        id: "es-l4-p1",
+        text: "Uno, dos, tres.",
+        translation: "One, two, three.",
+      },
+      {
+        id: "es-l4-p2",
+        text: "Tengo dos hermanos.",
+        translation: "I have two siblings.",
+      },
     ],
     activities: [
       {
@@ -308,7 +353,7 @@ export const lessons: Lesson[] = [
     number: 5,
     title: "How Are You?",
     subtitle: "Ask and answer about feelings",
-    description: "Check in on someone and share how you're doing in Spanish.",
+    description: "Ask and answer how you are.",
     goal: "Ask how someone is doing and respond with a simple feeling word.",
     goals: [
       { id: "es-l5-g1", label: "Ask ¿Cómo estás?" },
@@ -321,13 +366,31 @@ export const lessons: Lesson[] = [
         translation: "How are you?",
         phonetic: "KOH-moh ehs-TAHS",
       },
-      { id: "es-l5-v2", word: "bien", translation: "well / good", phonetic: "bee-EHN" },
-      { id: "es-l5-v3", word: "mal", translation: "bad / not well", phonetic: "mahl" },
+      {
+        id: "es-l5-v2",
+        word: "bien",
+        translation: "well / good",
+        phonetic: "bee-EHN",
+      },
+      {
+        id: "es-l5-v3",
+        word: "mal",
+        translation: "bad / not well",
+        phonetic: "mahl",
+      },
     ],
     phrases: [
       { id: "es-l5-p1", text: "¿Cómo estás?", translation: "How are you?" },
-      { id: "es-l5-p2", text: "Estoy bien, gracias.", translation: "I'm fine, thank you." },
-      { id: "es-l5-p3", text: "Estoy un poco mal.", translation: "I'm not doing so well." },
+      {
+        id: "es-l5-p2",
+        text: "Estoy bien, gracias.",
+        translation: "I'm fine, thank you.",
+      },
+      {
+        id: "es-l5-p3",
+        text: "Estoy un poco mal.",
+        translation: "I'm not doing so well.",
+      },
     ],
     activities: [
       {
@@ -371,19 +434,37 @@ export const lessons: Lesson[] = [
     number: 6,
     title: "Nice to Meet You",
     subtitle: "Wrap up your first conversations",
-    description: "Combine introductions, feelings, and polite phrases in one short exchange.",
+    description: "Hold your first short conversation.",
     goal: "Hold a short introduction conversation from hello to nice to meet you.",
     goals: [
       { id: "es-l6-g1", label: "Combine greetings and introductions" },
       { id: "es-l6-g2", label: "End a conversation politely" },
     ],
     vocabulary: [
-      { id: "es-l6-v1", word: "encantado", translation: "pleased to meet you (m.)", phonetic: "en-kahn-TAH-doh" },
-      { id: "es-l6-v2", word: "hasta luego", translation: "see you later", phonetic: "AHS-tah LWEH-goh" },
+      {
+        id: "es-l6-v1",
+        word: "encantado",
+        translation: "pleased to meet you (m.)",
+        phonetic: "en-kahn-TAH-doh",
+      },
+      {
+        id: "es-l6-v2",
+        word: "hasta luego",
+        translation: "see you later",
+        phonetic: "AHS-tah LWEH-goh",
+      },
     ],
     phrases: [
-      { id: "es-l6-p1", text: "Mucho gusto.", translation: "Nice to meet you." },
-      { id: "es-l6-p2", text: "Encantado.", translation: "Pleased to meet you." },
+      {
+        id: "es-l6-p1",
+        text: "Mucho gusto.",
+        translation: "Nice to meet you.",
+      },
+      {
+        id: "es-l6-p2",
+        text: "Encantado.",
+        translation: "Pleased to meet you.",
+      },
       { id: "es-l6-p3", text: "Hasta luego.", translation: "See you later." },
     ],
     activities: [
@@ -430,16 +511,31 @@ export const lessons: Lesson[] = [
     number: 1,
     title: "Bonjour!",
     subtitle: "French greetings for any time of day",
-    description: "Say hello and goodbye in French for morning, afternoon, and evening.",
+    description: "Greet people any time of day.",
     goal: "Greet someone appropriately based on the time of day in French.",
     goals: [
       { id: "fr-l1-g1", label: "Use bonjour and bonsoir" },
       { id: "fr-l1-g2", label: "Say au revoir naturally" },
     ],
     vocabulary: [
-      { id: "fr-l1-v1", word: "bonjour", translation: "hello / good day", phonetic: "bon-ZHOOR" },
-      { id: "fr-l1-v2", word: "bonsoir", translation: "good evening", phonetic: "bon-SWAHR" },
-      { id: "fr-l1-v3", word: "au revoir", translation: "goodbye", phonetic: "oh ruh-VWAHR" },
+      {
+        id: "fr-l1-v1",
+        word: "bonjour",
+        translation: "hello / good day",
+        phonetic: "bon-ZHOOR",
+      },
+      {
+        id: "fr-l1-v2",
+        word: "bonsoir",
+        translation: "good evening",
+        phonetic: "bon-SWAHR",
+      },
+      {
+        id: "fr-l1-v3",
+        word: "au revoir",
+        translation: "goodbye",
+        phonetic: "oh ruh-VWAHR",
+      },
     ],
     phrases: [
       { id: "fr-l1-p1", text: "Bonjour!", translation: "Hello!" },
@@ -488,7 +584,7 @@ export const lessons: Lesson[] = [
     number: 2,
     title: "S'il Vous Plaît",
     subtitle: "Please, thank you, and you're welcome",
-    description: "Sound polite in French with essential courtesy phrases.",
+    description: "Learn please, thanks, and welcome.",
     goal: "Ask politely and express thanks in French.",
     goals: [
       { id: "fr-l2-g1", label: "Say s'il vous plaît when asking" },
@@ -501,12 +597,26 @@ export const lessons: Lesson[] = [
         translation: "please (formal)",
         phonetic: "seel voo PLEH",
       },
-      { id: "fr-l2-v2", word: "merci", translation: "thank you", phonetic: "mehr-SEE" },
-      { id: "fr-l2-v3", word: "de rien", translation: "you're welcome", phonetic: "duh ree-EHN" },
+      {
+        id: "fr-l2-v2",
+        word: "merci",
+        translation: "thank you",
+        phonetic: "mehr-SEE",
+      },
+      {
+        id: "fr-l2-v3",
+        word: "de rien",
+        translation: "you're welcome",
+        phonetic: "duh ree-EHN",
+      },
     ],
     phrases: [
       { id: "fr-l2-p1", text: "S'il vous plaît.", translation: "Please." },
-      { id: "fr-l2-p2", text: "Merci beaucoup.", translation: "Thank you very much." },
+      {
+        id: "fr-l2-p2",
+        text: "Merci beaucoup.",
+        translation: "Thank you very much.",
+      },
       { id: "fr-l2-p3", text: "De rien.", translation: "You're welcome." },
     ],
     activities: [
@@ -551,7 +661,7 @@ export const lessons: Lesson[] = [
     number: 3,
     title: "Je M'appelle…",
     subtitle: "Introduce yourself in French",
-    description: "Share your name and ask someone theirs in a friendly way.",
+    description: "Introduce yourself and ask names.",
     goal: "Introduce yourself and ask for someone's name in French.",
     goals: [
       { id: "fr-l3-g1", label: "Say je m'appelle with your name" },
@@ -578,8 +688,16 @@ export const lessons: Lesson[] = [
       },
     ],
     phrases: [
-      { id: "fr-l3-p1", text: "Je m'appelle Marie.", translation: "My name is Marie." },
-      { id: "fr-l3-p2", text: "Comment tu t'appelles?", translation: "What's your name?" },
+      {
+        id: "fr-l3-p1",
+        text: "Je m'appelle Marie.",
+        translation: "My name is Marie.",
+      },
+      {
+        id: "fr-l3-p2",
+        text: "Comment tu t'appelles?",
+        translation: "What's your name?",
+      },
       { id: "fr-l3-p3", text: "Enchanté!", translation: "Nice to meet you!" },
     ],
     activities: [
@@ -625,7 +743,7 @@ export const lessons: Lesson[] = [
     number: 4,
     title: "Les Nombres 1–10",
     subtitle: "Count in French",
-    description: "Learn French numbers from one to ten and use them in short phrases.",
+    description: "Count from one to ten in French.",
     goal: "Count from 1 to 10 in French and use numbers in a simple sentence.",
     goals: [
       { id: "fr-l4-g1", label: "Count from un to dix" },
@@ -634,12 +752,25 @@ export const lessons: Lesson[] = [
     vocabulary: [
       { id: "fr-l4-v1", word: "un", translation: "one", phonetic: "uhn" },
       { id: "fr-l4-v2", word: "deux", translation: "two", phonetic: "duh" },
-      { id: "fr-l4-v3", word: "trois", translation: "three", phonetic: "trwah" },
+      {
+        id: "fr-l4-v3",
+        word: "trois",
+        translation: "three",
+        phonetic: "trwah",
+      },
       { id: "fr-l4-v4", word: "dix", translation: "ten", phonetic: "deess" },
     ],
     phrases: [
-      { id: "fr-l4-p1", text: "Un, deux, trois.", translation: "One, two, three." },
-      { id: "fr-l4-p2", text: "J'ai deux chats.", translation: "I have two cats." },
+      {
+        id: "fr-l4-p1",
+        text: "Un, deux, trois.",
+        translation: "One, two, three.",
+      },
+      {
+        id: "fr-l4-p2",
+        text: "J'ai deux chats.",
+        translation: "I have two cats.",
+      },
     ],
     activities: [
       {
@@ -683,7 +814,7 @@ export const lessons: Lesson[] = [
     number: 5,
     title: "Ça Va?",
     subtitle: "Ask and answer how you're doing",
-    description: "Check in on someone and share how you feel in French.",
+    description: "Ask and answer how you feel.",
     goal: "Ask how someone is doing and respond with ça va or pas bien.",
     goals: [
       { id: "fr-l5-g1", label: "Ask Comment ça va?" },
@@ -696,13 +827,31 @@ export const lessons: Lesson[] = [
         translation: "How are you?",
         phonetic: "koh-mahn sah vah",
       },
-      { id: "fr-l5-v2", word: "ça va bien", translation: "I'm doing well", phonetic: "sah vah bee-EHN" },
-      { id: "fr-l5-v3", word: "pas bien", translation: "not well", phonetic: "pah bee-EHN" },
+      {
+        id: "fr-l5-v2",
+        word: "ça va bien",
+        translation: "I'm doing well",
+        phonetic: "sah vah bee-EHN",
+      },
+      {
+        id: "fr-l5-v3",
+        word: "pas bien",
+        translation: "not well",
+        phonetic: "pah bee-EHN",
+      },
     ],
     phrases: [
       { id: "fr-l5-p1", text: "Comment ça va?", translation: "How are you?" },
-      { id: "fr-l5-p2", text: "Ça va bien, merci.", translation: "I'm fine, thanks." },
-      { id: "fr-l5-p3", text: "Pas bien aujourd'hui.", translation: "Not great today." },
+      {
+        id: "fr-l5-p2",
+        text: "Ça va bien, merci.",
+        translation: "I'm fine, thanks.",
+      },
+      {
+        id: "fr-l5-p3",
+        text: "Pas bien aujourd'hui.",
+        translation: "Not great today.",
+      },
     ],
     activities: [
       {
@@ -746,19 +895,33 @@ export const lessons: Lesson[] = [
     number: 6,
     title: "Enchanté!",
     subtitle: "Your first full French conversation",
-    description: "Combine greetings, introductions, and polite phrases in one exchange.",
+    description: "Hold your first French conversation.",
     goal: "Hold a short introduction conversation from bonjour to enchanté.",
     goals: [
       { id: "fr-l6-g1", label: "Combine greetings and introductions" },
       { id: "fr-l6-g2", label: "End a conversation with à bientôt" },
     ],
     vocabulary: [
-      { id: "fr-l6-v1", word: "à bientôt", translation: "see you soon", phonetic: "ah bee-ahn-TOH" },
-      { id: "fr-l6-v2", word: "ravi", translation: "delighted (to meet you)", phonetic: "rah-VEE" },
+      {
+        id: "fr-l6-v1",
+        word: "à bientôt",
+        translation: "see you soon",
+        phonetic: "ah bee-ahn-TOH",
+      },
+      {
+        id: "fr-l6-v2",
+        word: "ravi",
+        translation: "delighted (to meet you)",
+        phonetic: "rah-VEE",
+      },
     ],
     phrases: [
       { id: "fr-l6-p1", text: "Enchanté!", translation: "Nice to meet you!" },
-      { id: "fr-l6-p2", text: "Ravi de te rencontrer.", translation: "Glad to meet you." },
+      {
+        id: "fr-l6-p2",
+        text: "Ravi de te rencontrer.",
+        translation: "Glad to meet you.",
+      },
       { id: "fr-l6-p3", text: "À bientôt!", translation: "See you soon!" },
     ],
     activities: [
@@ -805,20 +968,39 @@ export const lessons: Lesson[] = [
     number: 1,
     title: "Konnichiwa!",
     subtitle: "Essential Japanese greetings",
-    description: "Learn hello, good morning, and goodbye for everyday situations.",
+    description: "Learn basic Japanese greetings.",
     goal: "Greet someone and say goodbye in Japanese.",
     goals: [
       { id: "ja-l1-g1", label: "Use konnichiwa and ohayō" },
       { id: "ja-l1-g2", label: "Say sayōnara and ja ne" },
     ],
     vocabulary: [
-      { id: "ja-l1-v1", word: "こんにちは", translation: "hello", phonetic: "kon-nee-chee-wah" },
-      { id: "ja-l1-v2", word: "おはよう", translation: "good morning", phonetic: "oh-hah-yoh" },
-      { id: "ja-l1-v3", word: "さようなら", translation: "goodbye", phonetic: "sah-yoh-nah-rah" },
+      {
+        id: "ja-l1-v1",
+        word: "こんにちは",
+        translation: "hello",
+        phonetic: "kon-nee-chee-wah",
+      },
+      {
+        id: "ja-l1-v2",
+        word: "おはよう",
+        translation: "good morning",
+        phonetic: "oh-hah-yoh",
+      },
+      {
+        id: "ja-l1-v3",
+        word: "さようなら",
+        translation: "goodbye",
+        phonetic: "sah-yoh-nah-rah",
+      },
     ],
     phrases: [
       { id: "ja-l1-p1", text: "こんにちは！", translation: "Hello!" },
-      { id: "ja-l1-p2", text: "おはようございます。", translation: "Good morning. (polite)" },
+      {
+        id: "ja-l1-p2",
+        text: "おはようございます。",
+        translation: "Good morning. (polite)",
+      },
       { id: "ja-l1-p3", text: "じゃあね。", translation: "See ya!" },
     ],
     activities: [
@@ -863,7 +1045,7 @@ export const lessons: Lesson[] = [
     number: 2,
     title: "Please & Thank You",
     subtitle: "Polite Japanese expressions",
-    description: "Use onegaishimasu and arigatō to sound respectful and kind.",
+    description: "Ask politely and say thank you.",
     goal: "Ask politely and thank someone in Japanese.",
     goals: [
       { id: "ja-l2-g1", label: "Say お願いします when asking" },
@@ -876,7 +1058,12 @@ export const lessons: Lesson[] = [
         translation: "please",
         phonetic: "oh-neh-guy-shee-mahs",
       },
-      { id: "ja-l2-v2", word: "ありがとう", translation: "thank you", phonetic: "ah-ree-gah-toh" },
+      {
+        id: "ja-l2-v2",
+        word: "ありがとう",
+        translation: "thank you",
+        phonetic: "ah-ree-gah-toh",
+      },
       {
         id: "ja-l2-v3",
         word: "どういたしまして",
@@ -886,8 +1073,16 @@ export const lessons: Lesson[] = [
     ],
     phrases: [
       { id: "ja-l2-p1", text: "お願いします。", translation: "Please." },
-      { id: "ja-l2-p2", text: "ありがとうございます。", translation: "Thank you very much." },
-      { id: "ja-l2-p3", text: "どういたしまして。", translation: "You're welcome." },
+      {
+        id: "ja-l2-p2",
+        text: "ありがとうございます。",
+        translation: "Thank you very much.",
+      },
+      {
+        id: "ja-l2-p3",
+        text: "どういたしまして。",
+        translation: "You're welcome.",
+      },
     ],
     activities: [
       {
@@ -931,21 +1126,40 @@ export const lessons: Lesson[] = [
     number: 3,
     title: "Watashi wa…",
     subtitle: "Introduce yourself in Japanese",
-    description: "Share your name and ask someone theirs using simple Japanese.",
+    description: "Introduce yourself and ask names.",
     goal: "Introduce yourself and ask for someone's name in Japanese.",
     goals: [
       { id: "ja-l3-g1", label: "Say 私は…です with your name" },
       { id: "ja-l3-g2", label: "Ask お名前は？" },
     ],
     vocabulary: [
-      { id: "ja-l3-v1", word: "私", translation: "I / me", phonetic: "wah-tah-shee" },
-      { id: "ja-l3-v2", word: "名前", translation: "name", phonetic: "nah-meh" },
-      { id: "ja-l3-v3", word: "はじめまして", translation: "nice to meet you", phonetic: "hah-jee-meh-mah-sheh-teh" },
+      {
+        id: "ja-l3-v1",
+        word: "私",
+        translation: "I / me",
+        phonetic: "wah-tah-shee",
+      },
+      {
+        id: "ja-l3-v2",
+        word: "名前",
+        translation: "name",
+        phonetic: "nah-meh",
+      },
+      {
+        id: "ja-l3-v3",
+        word: "はじめまして",
+        translation: "nice to meet you",
+        phonetic: "hah-jee-meh-mah-sheh-teh",
+      },
     ],
     phrases: [
       { id: "ja-l3-p1", text: "私はユキです。", translation: "I am Yuki." },
       { id: "ja-l3-p2", text: "お名前は？", translation: "What is your name?" },
-      { id: "ja-l3-p3", text: "はじめまして。", translation: "Nice to meet you." },
+      {
+        id: "ja-l3-p3",
+        text: "はじめまして。",
+        translation: "Nice to meet you.",
+      },
     ],
     activities: [
       {
@@ -990,7 +1204,7 @@ export const lessons: Lesson[] = [
     number: 4,
     title: "Numbers 1–10",
     subtitle: "Count in Japanese",
-    description: "Learn Japanese numbers from ichi to jū and use them in short phrases.",
+    description: "Count from one to ten in Japanese.",
     goal: "Count from 1 to 10 in Japanese and recognize numbers in context.",
     goals: [
       { id: "ja-l4-g1", label: "Count from いち to じゅう" },
@@ -1003,8 +1217,16 @@ export const lessons: Lesson[] = [
       { id: "ja-l4-v4", word: "じゅう", translation: "ten", phonetic: "joo" },
     ],
     phrases: [
-      { id: "ja-l4-p1", text: "いち、に、さん。", translation: "One, two, three." },
-      { id: "ja-l4-p2", text: "ねこが二匹います。", translation: "There are two cats." },
+      {
+        id: "ja-l4-p1",
+        text: "いち、に、さん。",
+        translation: "One, two, three.",
+      },
+      {
+        id: "ja-l4-p2",
+        text: "ねこが二匹います。",
+        translation: "There are two cats.",
+      },
     ],
     activities: [
       {
@@ -1048,7 +1270,7 @@ export const lessons: Lesson[] = [
     number: 5,
     title: "Genki?",
     subtitle: "Ask how someone is doing",
-    description: "Check in on someone and share how you feel in Japanese.",
+    description: "Ask and answer how you feel.",
     goal: "Ask how someone is doing and respond with genki or chotto.",
     goals: [
       { id: "ja-l5-g1", label: "Ask お元気ですか？" },
@@ -1061,13 +1283,31 @@ export const lessons: Lesson[] = [
         translation: "How are you?",
         phonetic: "oh-gen-kee dess-kah",
       },
-      { id: "ja-l5-v2", word: "元気", translation: "healthy / well", phonetic: "gen-kee" },
-      { id: "ja-l5-v3", word: "ちょっと", translation: "a little / somewhat", phonetic: "cho-toh" },
+      {
+        id: "ja-l5-v2",
+        word: "元気",
+        translation: "healthy / well",
+        phonetic: "gen-kee",
+      },
+      {
+        id: "ja-l5-v3",
+        word: "ちょっと",
+        translation: "a little / somewhat",
+        phonetic: "cho-toh",
+      },
     ],
     phrases: [
       { id: "ja-l5-p1", text: "お元気ですか？", translation: "How are you?" },
-      { id: "ja-l5-p2", text: "元気です、ありがとう。", translation: "I'm fine, thank you." },
-      { id: "ja-l5-p3", text: "ちょっと疲れました。", translation: "I'm a little tired." },
+      {
+        id: "ja-l5-p2",
+        text: "元気です、ありがとう。",
+        translation: "I'm fine, thank you.",
+      },
+      {
+        id: "ja-l5-p3",
+        text: "ちょっと疲れました。",
+        translation: "I'm a little tired.",
+      },
     ],
     activities: [
       {
@@ -1111,7 +1351,7 @@ export const lessons: Lesson[] = [
     number: 6,
     title: "Yoroshiku!",
     subtitle: "Your first full Japanese conversation",
-    description: "Combine greetings, introductions, and polite phrases in one exchange.",
+    description: "Hold your first Japanese conversation.",
     goal: "Hold a short introduction conversation from konnichiwa to yoroshiku onegaishimasu.",
     goals: [
       { id: "ja-l6-g1", label: "Combine greetings and introductions" },
@@ -1124,11 +1364,24 @@ export const lessons: Lesson[] = [
         translation: "pleased to meet you / please treat me well",
         phonetic: "yoh-roh-shee-koo oh-neh-guy-shee-mahs",
       },
-      { id: "ja-l6-v2", word: "またね", translation: "see you later", phonetic: "mah-tah-neh" },
+      {
+        id: "ja-l6-v2",
+        word: "またね",
+        translation: "see you later",
+        phonetic: "mah-tah-neh",
+      },
     ],
     phrases: [
-      { id: "ja-l6-p1", text: "はじめまして。", translation: "Nice to meet you." },
-      { id: "ja-l6-p2", text: "よろしくお願いします。", translation: "Pleased to meet you." },
+      {
+        id: "ja-l6-p1",
+        text: "はじめまして。",
+        translation: "Nice to meet you.",
+      },
+      {
+        id: "ja-l6-p2",
+        text: "よろしくお願いします。",
+        translation: "Pleased to meet you.",
+      },
       { id: "ja-l6-p3", text: "またね！", translation: "See you later!" },
     ],
     activities: [
@@ -1184,7 +1437,9 @@ export function getLessonsByLanguageCode(languageCode: LanguageCode): Lesson[] {
     .sort((a, b) => a.number - b.number);
 }
 
-export function getLessonWithLanguage(lessonId: string): LessonWithLanguage | undefined {
+export function getLessonWithLanguage(
+  lessonId: string,
+): LessonWithLanguage | undefined {
   const lesson = getLessonById(lessonId);
   if (!lesson) {
     return undefined;
@@ -1198,14 +1453,18 @@ export function getLessonWithLanguage(lessonId: string): LessonWithLanguage | un
   return { ...lesson, language };
 }
 
-export function getUnitsWithLessons(languageCode: LanguageCode): UnitWithLessons[] {
+export function getUnitsWithLessons(
+  languageCode: LanguageCode,
+): UnitWithLessons[] {
   return getUnitsByLanguageCode(languageCode).map((unit) => ({
     ...unit,
     lessons: getLessonsByUnitId(unit.id),
   }));
 }
 
-export function getFirstLessonForLanguage(languageCode: LanguageCode): Lesson | undefined {
+export function getFirstLessonForLanguage(
+  languageCode: LanguageCode,
+): Lesson | undefined {
   return getLessonsByLanguageCode(languageCode)[0];
 }
 
