@@ -7,6 +7,7 @@ import mascotLessonBanner from "@/assets/images/lesson/mascot-lesson-banner.png"
 import mascotLessonFullBanner from "@/assets/images/lesson/mascot-lesson-full-banner.png";
 import mascotLessonTable1 from "@/assets/images/lesson/mascot-lesson-table-1.png";
 import mascotLessonTable from "@/assets/images/lesson/mascot-lesson-table.png";
+import mascotProfile from "@/assets/images/lesson/mascot-profile.png";
 import mascotLogo1OrangeFist from "@/assets/images/mascot-logo-1-orange-fist.png";
 import mascotLogo1Orange from "@/assets/images/mascot-logo-1-orange.png";
 import mascotLogo1 from "@/assets/images/mascot-logo-1.png";
@@ -38,4 +39,5 @@ export const images = {
   mascotLessonFullBanner,
   mascotLessonTable,
   mascotLessonTable1,
+  mascotProfile,
 };

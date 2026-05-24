@@ -2,21 +2,35 @@ import { getLessonWithLanguage } from "@/data/lessons";
 import { getLessonScreenData } from "@/lib/lesson-screen-data";
 import { useLearningProgressStore } from "@/store/learning-progress-store";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { LessonActivityCard } from "@/components/lesson/lesson-activity-card";
-import { LessonHeader } from "@/components/lesson/lesson-header";
-import { LessonFeedbackStats } from "@/components/lesson/lesson-feedback-stats";
-import { LessonProgressBar } from "@/components/lesson/lesson-progress-bar";
-import { TodaysWordsSection } from "@/components/lesson/todays-words-section";
-import { lessonSpacing } from "@/constants/lesson-spacing";
+import { LessonAiHeader } from "@/components/lesson/lesson-ai-header";
+import { LessonAiStatusBar } from "@/components/lesson/lesson-ai-status-bar";
+import { LessonChatMessages } from "@/components/lesson/lesson-chat-messages";
+import { LessonConversationProgress } from "@/components/lesson/lesson-conversation-progress";
+import { LessonListeningPanel } from "@/components/lesson/lesson-listening-panel";
+import { LessonStreakModal } from "@/components/lesson/lesson-streak-modal";
+import { lessonSpace, lessonSpacing } from "@/constants/lesson-spacing";
+
+type ConversationPhase = "ai-speaking" | "ready";
+
+function getTeacherSpeakingDuration(prompt: string): number {
+  return Math.min(4000, Math.max(1500, prompt.length * 50));
+}
 
 export default function LessonDetailScreen() {
   const router = useRouter();
+  const scrollRef = useRef<ScrollView>(null);
   const { id } = useLocalSearchParams<{ id: string }>();
   const lesson = id ? getLessonWithLanguage(id) : undefined;
+
+  const streakDays = useLearningProgressStore((state) => state.streakDays);
+  const completedLessonIds = useLearningProgressStore(
+    (state) => state.completedLessonIds,
+  );
   const setLessonProgress = useLearningProgressStore(
     (state) => state.setLessonProgress,
   );
@@ -30,8 +44,42 @@ export default function LessonDetailScreen() {
   );
 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [showCurrentUserMessage, setShowCurrentUserMessage] = useState(false);
+  const [conversationPhase, setConversationPhase] =
+    useState<ConversationPhase>("ai-speaking");
+  const [isStreakModalVisible, setIsStreakModalVisible] = useState(false);
 
-  if (!lesson || !screenData || screenData.steps.length === 0) {
+  const totalXp = useMemo(() => {
+    const baseXp = completedLessonIds.length * 50;
+    const lessonBonus = lesson?.xpReward ?? 0;
+    const stepBonus = currentStepIndex * 10;
+
+    return baseXp + lessonBonus + stepBonus + 500;
+  }, [completedLessonIds.length, currentStepIndex, lesson?.xpReward]);
+
+  const streakModalContent = useMemo(
+    () => screenData?.getStreakModalContent(streakDays),
+    [screenData, streakDays],
+  );
+
+  const currentExchange = screenData?.exchanges[currentStepIndex];
+
+  useEffect(() => {
+    if (!currentExchange) {
+      return;
+    }
+
+    setConversationPhase("ai-speaking");
+
+    const timer = setTimeout(
+      () => setConversationPhase("ready"),
+      getTeacherSpeakingDuration(currentExchange.aiPrompt),
+    );
+
+    return () => clearTimeout(timer);
+  }, [currentExchange]);
+
+  if (!lesson || !screenData || screenData.exchanges.length === 0) {
     return (
       <SafeAreaView
         style={{ flex: 1, backgroundColor: lessonSpacing.screenBackground }}
@@ -63,24 +111,57 @@ export default function LessonDetailScreen() {
     );
   }
 
-  const currentStep = screenData.steps[currentStepIndex];
-  const currentStepNumber = currentStepIndex + 1;
-  const isLastStep = currentStepNumber === screenData.totalSteps;
+  const completedExchanges = screenData.exchanges.slice(0, currentStepIndex);
+  const isLastStep = currentStepIndex === screenData.totalExchanges - 1;
+  const completedCount = showCurrentUserMessage
+    ? currentStepIndex + 1
+    : currentStepIndex;
 
-  const handleNext = () => {
-    const progressPercent = Math.round(
-      (currentStepNumber / screenData.totalSteps) * 100,
-    );
+  const canSpeak =
+    conversationPhase === "ready" && !showCurrentUserMessage;
 
-    setLessonProgress(lesson.id, progressPercent);
-
-    if (isLastStep) {
-      completeLesson(lesson.id);
-      router.back();
+  const handleSpeak = () => {
+    if (!canSpeak) {
       return;
     }
 
-    setCurrentStepIndex((previous) => previous + 1);
+    setShowCurrentUserMessage(true);
+    setConversationPhase("ai-speaking");
+
+    setTimeout(() => {
+      const nextIndex = currentStepIndex + 1;
+      const progressPercent = Math.round(
+        (nextIndex / screenData.totalExchanges) * 100,
+      );
+
+      setLessonProgress(lesson.id, progressPercent);
+
+      if (isLastStep) {
+        completeLesson(lesson.id);
+        router.back();
+        return;
+      }
+
+      setCurrentStepIndex(nextIndex);
+      setShowCurrentUserMessage(false);
+    }, 900);
+  };
+
+  const handleEnd = () => {
+    const progressPercent = Math.round(
+      (completedCount / screenData.totalExchanges) * 100,
+    );
+
+    setLessonProgress(lesson.id, progressPercent);
+    router.back();
+  };
+
+  const handleHint = () => {
+    if (!currentExchange) {
+      return;
+    }
+
+    Alert.alert("Hint", currentExchange.hint);
   };
 
   const handleBack = () => {
@@ -92,39 +173,92 @@ export default function LessonDetailScreen() {
       edges={["top"]}
       style={{ flex: 1, backgroundColor: lessonSpacing.screenBackground }}
     >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
+      <View
+        style={{
+          flex: 1,
           paddingHorizontal: lessonSpacing.screenPadding,
-          paddingBottom: lessonSpacing.scrollBottomPadding,
         }}
       >
-        <LessonHeader
-          title={screenData.headerTitle}
-          currentStep={currentStepNumber}
-          totalSteps={screenData.totalSteps}
-          onBack={handleBack}
+        <LessonAiHeader title={screenData.headerTitle} onBack={handleBack} />
+
+        <LessonAiStatusBar
+          tagLabel={screenData.tagLabel}
+          streakDays={streakDays}
+          totalXp={totalXp}
+          onStreakPress={() => setIsStreakModalVisible((previous) => !previous)}
         />
 
-        <View style={{ marginTop: lessonSpacing.headerToCard }}>
-          <LessonActivityCard
-            step={currentStep}
-            onNext={handleNext}
-            isLastStep={isLastStep}
+        <ScrollView
+          ref={scrollRef}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: lessonSpacing.statusToChat,
+            paddingBottom: lessonSpace.sm,
+          }}
+          onContentSizeChange={() =>
+            scrollRef.current?.scrollToEnd({ animated: true })
+          }
+        >
+          <LessonChatMessages
+            completedExchanges={completedExchanges}
+            currentExchange={currentExchange}
+            showCurrentUserMessage={showCurrentUserMessage}
+            onHintPress={handleHint}
+          />
+        </ScrollView>
+
+        <View
+          style={{
+            marginTop: lessonSpacing.statusToChat,
+            paddingBottom: lessonSpacing.progressBottomPadding,
+          }}
+        >
+          <LessonListeningPanel
+            speakInstruction={screenData.speakInstruction}
+            isTeacherSpeaking={conversationPhase === "ai-speaking"}
+            canSpeak={canSpeak}
+            onSpeakPress={handleSpeak}
+          />
+
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="End conversation"
+            onPress={handleEnd}
+            className="active:opacity-80"
+            style={{ marginTop: lessonSpacing.actionsToProgress }}
+          >
+            <View
+              className="items-center justify-center"
+              style={{
+                height: lessonSpacing.actionButtonHeight + 12,
+                borderRadius: lessonSpacing.cardRadius,
+                backgroundColor: "#EF4444",
+              }}
+            >
+              <Ionicons
+                name="call"
+                size={32}
+                color="#FFFFFF"
+                style={{ transform: [{ rotate: "135deg" }] }}
+              />
+            </View>
+          </Pressable>
+
+          <LessonConversationProgress
+            completedExchanges={completedCount}
+            totalExchanges={screenData.totalExchanges}
           />
         </View>
+      </View>
 
-        <View style={{ marginTop: lessonSpacing.cardToProgress }}>
-          <LessonProgressBar
-            currentStep={currentStepNumber}
-            totalSteps={screenData.totalSteps}
-          />
-        </View>
-
-        <TodaysWordsSection words={screenData.todaysWords} />
-
-        <LessonFeedbackStats />
-      </ScrollView>
+      {streakModalContent ? (
+        <LessonStreakModal
+          visible={isStreakModalVisible}
+          title={streakModalContent.title}
+          description={streakModalContent.description}
+          onClose={() => setIsStreakModalVisible(false)}
+        />
+      ) : null}
     </SafeAreaView>
   );
 }

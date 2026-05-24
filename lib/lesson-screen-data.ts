@@ -1,5 +1,8 @@
-import { getUnitById } from "@/data/units";
-import type { Lesson, LessonWithLanguage, VocabularyItem } from "@/types/learning";
+import type {
+  LessonWithLanguage,
+  Phrase,
+  VocabularyItem,
+} from "@/types/learning";
 
 export type LessonStep = {
   id: string;
@@ -9,68 +12,79 @@ export type LessonStep = {
   instruction: string;
 };
 
-export type LessonScreenData = {
-  headerTitle: string;
-  steps: LessonStep[];
-  todaysWords: VocabularyItem[];
-  totalSteps: number;
+export type ConversationExchange = {
+  id: string;
+  aiPrompt: string;
+  userResponse: string;
+  hint: string;
 };
 
-function getLevelLabel(unitNumber: number): string {
-  if (unitNumber <= 1) {
-    return "A1";
-  }
+export type StreakModalContent = {
+  title: string;
+  description: string;
+};
 
-  if (unitNumber === 2) {
-    return "A2";
-  }
+export type LessonScreenData = {
+  headerTitle: string;
+  tagLabel: string;
+  languageName: string;
+  getStreakModalContent: (streakDays: number) => StreakModalContent;
+  speakInstruction: string;
+  exchanges: ConversationExchange[];
+  totalExchanges: number;
+  todaysWords: VocabularyItem[];
+};
 
-  if (unitNumber === 3) {
-    return "B1";
-  }
+const MAX_CONVERSATION_EXCHANGES = 5;
 
-  return `B${unitNumber - 2}`;
+function getAiPrompt(phrase: Phrase, languageName: string): string {
+  const trimmed = phrase.translation.replace(/\.$/, "");
+
+  return `Say "${trimmed}" in ${languageName}.`;
 }
 
-function getLessonTopicLabel(lesson: Lesson): string {
-  const words = lesson.subtitle.trim().split(/\s+/);
-  const lastWord = words[words.length - 1] ?? lesson.title;
+function buildConversationExchanges(
+  lesson: LessonWithLanguage,
+): ConversationExchange[] {
+  const phraseExchanges = lesson.phrases
+    .slice(0, MAX_CONVERSATION_EXCHANGES)
+    .map((phrase) => ({
+      id: phrase.id,
+      aiPrompt: getAiPrompt(phrase, lesson.language.name),
+      userResponse: phrase.translation,
+      hint: phrase.text,
+    }));
 
-  return lastWord.charAt(0).toUpperCase() + lastWord.slice(1);
-}
+  if (phraseExchanges.length > 0) {
+    return phraseExchanges;
+  }
 
-function buildLessonSteps(lesson: Lesson): LessonStep[] {
-  const vocabularySteps = lesson.vocabulary.map((item) => ({
+  return lesson.vocabulary.slice(0, MAX_CONVERSATION_EXCHANGES).map((item) => ({
     id: item.id,
-    text: item.word,
-    translation: item.translation,
-    phonetic: item.phonetic,
-    instruction: "Listen and repeat",
+    aiPrompt: `Say "${item.translation}" in ${lesson.language.name}.`,
+    userResponse: item.translation,
+    hint: item.word,
   }));
-
-  const phraseSteps = lesson.phrases.map((item) => ({
-    id: item.id,
-    text: item.text,
-    translation: item.translation,
-    instruction: "Listen and repeat",
-  }));
-
-  return [...vocabularySteps, ...phraseSteps];
 }
 
 export function getLessonScreenData(
   lesson: LessonWithLanguage,
 ): LessonScreenData {
-  const unit = getUnitById(lesson.unitId);
-  const levelLabel = getLevelLabel(unit?.number ?? 1);
-  const topicLabel = getLessonTopicLabel(lesson);
-  const steps = buildLessonSteps(lesson);
+  const exchanges = buildConversationExchanges(lesson);
 
   return {
-    headerTitle: `${levelLabel} • ${topicLabel}`,
-    steps,
+    headerTitle: "AI Teacher",
+    tagLabel: "Online",
+    languageName: lesson.language.name,
+    getStreakModalContent: (streakDays) => ({
+      title: `You're on a ${streakDays} day streak!`,
+      description:
+        "Keep practicing a little every day and you'll be speaking with confidence!",
+    }),
+    speakInstruction: `Hold to talk`,
+    exchanges,
+    totalExchanges: exchanges.length,
     todaysWords: [...lesson.vocabulary],
-    totalSteps: steps.length,
   };
 }
 

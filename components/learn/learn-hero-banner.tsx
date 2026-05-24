@@ -2,7 +2,11 @@ import { Image } from "expo-image";
 import { Text, View } from "react-native";
 
 import { images } from "@/constants/images";
-import { LEARN_CARD_SHADOW, learnSpace, learnSpacing } from "@/constants/learn-spacing";
+import {
+  LEARN_CARD_SHADOW,
+  learnSpace,
+  learnSpacing,
+} from "@/constants/learn-spacing";
 
 type LearnHeroBannerProps = {
   languageName: string;
@@ -56,7 +60,7 @@ export function LearnHeroBanner({
           }}
         >
           <View
-            className="max-w-[55%] ml-1 min-w-0"
+            className="max-w-[55%] ml-6 min-w-0"
             style={{ paddingRight: 16 }}
           >
             <Text
@@ -69,17 +73,7 @@ export function LearnHeroBanner({
             >
               Let&apos;s learn {languageName}!
             </Text>
-            <Text
-              className="text-secondary"
-              style={{
-                fontFamily: "Poppins_400Regular",
-                fontSize: 12,
-                lineHeight: 16,
-                marginTop: 4,
-              }}
-            >
-              {completedCount} of {totalCount} lessons complete
-            </Text>
+
             <Text
               className="text-secondary"
               style={{
@@ -87,9 +81,10 @@ export function LearnHeroBanner({
                 fontSize: 11,
                 lineHeight: 14,
                 marginTop: 2,
+                maxWidth: 150,
               }}
             >
-              Tiny steps, big progress — you&apos;ve got this!
+              Tiny steps, big progress you&apos;ve got this!
             </Text>
           </View>
         </View>
@@ -100,10 +95,10 @@ export function LearnHeroBanner({
         accessibilityLabel="Foxi mascot studying at a desk"
         style={{
           position: "absolute",
-          right: 0,
-          bottom: -28,
-          width: 200,
-          height: 200,
+          right: 1,
+          bottom: -38,
+          width: 236,
+          height: 236,
         }}
         contentFit="contain"
       />

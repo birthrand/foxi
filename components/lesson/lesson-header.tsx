@@ -82,7 +82,6 @@ export function LessonHeader({
         className="ml-auto flex-row items-center"
         style={{ gap: 6, zIndex: 1 }}
       >
-        {/* <HeaderProgressBar currentStep={currentStep} totalSteps={totalSteps} /> */}
         <Text
           className="text-secondary"
           style={{

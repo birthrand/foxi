@@ -10,6 +10,13 @@ export const lessonSpacing = {
   screenPadding: lessonSpace.md,
   screenBackground: "#FFFBF5",
   scrollBottomPadding: lessonSpace.lg + 8,
+  headerToStatus: 10,
+  statusToChat: lessonSpace.sm,
+  chatGap: 10,
+  chatToListening: lessonSpace.sm,
+  listeningToActions: lessonSpace.sm,
+  actionsToProgress: lessonSpace.sm,
+  progressBottomPadding: lessonSpace.md,
   headerToCard: lessonSpace.sm,
   cardToProgress: lessonSpace.sm,
   progressToWords: lessonSpace.lg,
@@ -30,17 +37,23 @@ export const lessonSpacing = {
   headerProgressWidth: 56,
   speakerButtonSize: 56,
   activityIconSize: 28,
-  actionButtonHeight: 48,
+  actionButtonHeight: 60,
+  mascotAvatarSize: 36,
+  chatAvatarSize: 40,
+  listeningMicSize: 72,
+  segmentGap: 4,
 } as const;
 
 export const LESSON_BEIGE = "#F5EDE0";
+export const LESSON_USER_BUBBLE = "#FFF1E6";
+export const LESSON_TAG_BG = "#FFF7ED";
 
 export const LESSON_CARD_SHADOW = {
   shadowColor: "#0d132b",
   shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.4,
-  shadowRadius: 2,
-  elevation: 4,
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+  elevation: 3,
 } as const;
 
 export const LESSON_SPEAKER_SHADOW = {
