@@ -9,13 +9,22 @@ import {
 type LessonConversationProgressProps = {
   completedExchanges: number;
   totalExchanges: number;
+  isComplete?: boolean;
+  isAwaitingFinalFeedback?: boolean;
 };
 
 export function LessonConversationProgress({
   completedExchanges,
   totalExchanges,
+  isComplete = false,
+  isAwaitingFinalFeedback = false,
 }: LessonConversationProgressProps) {
   const safeTotal = Math.max(totalExchanges, 1);
+  const progressLabel = isComplete
+    ? "Lesson complete!"
+    : isAwaitingFinalFeedback
+      ? "Wrapping up..."
+      : "Conversation Progress";
 
   return (
     <View
@@ -41,9 +50,10 @@ export function LessonConversationProgress({
             fontSize: 13,
             lineHeight: 18,
             marginBottom: 8,
+            color: isComplete ? "#16a34a" : undefined,
           }}
         >
-          Conversation Progress
+          {progressLabel}
         </Text>
 
         <View className="flex-row" style={{ gap: lessonSpacing.segmentGap }}>

@@ -1,10 +1,10 @@
 import { getLanguageByCode } from "@/data/languages";
-import {
-  getFirstLessonForLanguage,
-  getLessonsByLanguageCode,
-  getLessonsByUnitId,
-} from "@/data/lessons";
+import { getLessonsByLanguageCode, getLessonsByUnitId } from "@/data/lessons";
 import { getUnitById } from "@/data/units";
+import {
+  getCompletedLessonIdsForLanguage,
+  getLessonProgressForLanguage,
+} from "@/lib/language-progress";
 import type { LanguageCode, Lesson } from "@/types/learning";
 
 export type FocusPlanType = "lesson" | "ai-conversation" | "new-words";
@@ -38,7 +38,7 @@ export type HomeStats = {
   streakDays: number;
 };
 
-const DEFAULT_LESSON_PROGRESS = 65;
+const DEFAULT_LESSON_PROGRESS = 0;
 
 function getLevelLabel(unitNumber: number): string {
   if (unitNumber <= 1) {
@@ -66,15 +66,15 @@ function getCurrentLesson(
   completedLessonIds: string[],
 ): Lesson {
   const lessons = getLessonsByLanguageCode(languageCode);
+  const completedForLanguage = getCompletedLessonIdsForLanguage(
+    languageCode,
+    completedLessonIds,
+  );
   const nextLesson = lessons.find(
-    (lesson) => !completedLessonIds.includes(lesson.id),
+    (lesson) => !completedForLanguage.includes(lesson.id),
   );
 
-  return (
-    nextLesson ??
-    lessons[lessons.length - 1] ??
-    getFirstLessonForLanguage(languageCode)!
-  );
+  return nextLesson ?? lessons[lessons.length - 1]!;
 }
 
 function getRecentVocabulary(
@@ -168,8 +168,12 @@ export function getHomeScreenData(
     progress.completedLessonIds,
   );
   const currentUnit = getUnitById(currentLesson.unitId);
+  const progressForLanguage = getLessonProgressForLanguage(
+    languageCode,
+    progress.lessonProgressPercent,
+  );
   const progressPercent =
-    progress.lessonProgressPercent[currentLesson.id] ?? DEFAULT_LESSON_PROGRESS;
+    progressForLanguage[currentLesson.id] ?? DEFAULT_LESSON_PROGRESS;
   const recentVocabulary = getRecentVocabulary(currentLesson, languageCode);
 
   const continueLearning: ContinueLearningItem = {

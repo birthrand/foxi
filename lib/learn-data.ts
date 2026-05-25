@@ -1,14 +1,25 @@
 import { getLanguageByCode } from "@/data/languages";
 import { getLessonsByLanguageCode, getLessonsByUnitId } from "@/data/lessons";
 import { getUnitsByLanguageCode } from "@/data/units";
+import { getEffectiveProgressForLanguage } from "@/lib/language-progress";
+import {
+  getLessonVisualStatus,
+  isLessonCompleted,
+  type LessonProgressSnapshot,
+  type LessonVisualStatus,
+} from "@/lib/lesson-access";
+import { getTotalConversationExchanges } from "@/lib/lesson-screen-data";
 import type { LanguageCode, Lesson, Unit } from "@/types/learning";
+import type { LessonExchangeProgress } from "@/store/learning-progress-store";
 
-export type LessonVisualStatus = "completed" | "in_progress" | "locked";
+export type { LessonVisualStatus };
 
 export type LessonListItem = {
   lesson: Lesson;
   status: LessonVisualStatus;
   progressPercent: number;
+  completedExchanges: number;
+  totalExchanges: number;
 };
 
 export type QuickReviewItem = {
@@ -37,38 +48,6 @@ export type LearnScreenData = {
   quickReview: QuickReviewItem[];
 };
 
-const DEFAULT_IN_PROGRESS_PERCENT = 65;
-
-function getEffectiveProgress(
-  languageCode: LanguageCode,
-  completedLessonIds: string[],
-  lessonProgressPercent: Record<string, number>,
-) {
-  const languageLessons = getLessonsByLanguageCode(languageCode);
-  const completedForLanguage = completedLessonIds.filter((id) =>
-    languageLessons.some((lesson) => lesson.id === id),
-  );
-
-  if (completedForLanguage.length > 0) {
-    return { completedLessonIds, lessonProgressPercent };
-  }
-
-  const unitOneLessons = getLessonsByUnitId(`${languageCode}-unit-1`);
-  const mockCompletedIds = unitOneLessons.slice(0, 2).map((lesson) => lesson.id);
-  const currentLessonId = unitOneLessons[2]?.id;
-
-  return {
-    completedLessonIds: [...completedLessonIds, ...mockCompletedIds],
-    lessonProgressPercent: currentLessonId
-      ? {
-          ...lessonProgressPercent,
-          [currentLessonId]:
-            lessonProgressPercent[currentLessonId] ?? DEFAULT_IN_PROGRESS_PERCENT,
-        }
-      : lessonProgressPercent,
-  };
-}
-
 function getActiveUnit(
   languageCode: LanguageCode,
   completedLessonIds: string[],
@@ -90,32 +69,26 @@ function getActiveUnit(
   return units[units.length - 1] ?? units[0]!;
 }
 
-function getLessonVisualStatus(
+function getExchangeCountsForLesson(
   lesson: Lesson,
-  completedLessonIds: string[],
-  currentLessonId: string | null,
-): LessonVisualStatus {
-  if (completedLessonIds.includes(lesson.id)) {
-    return "completed";
+  languageName: string,
+  progress: LessonProgressSnapshot,
+): { completedExchanges: number; totalExchanges: number } {
+  const totalExchanges = getTotalConversationExchanges(lesson, languageName);
+
+  if (isLessonCompleted(lesson.id, progress)) {
+    return { completedExchanges: totalExchanges, totalExchanges };
   }
 
-  if (lesson.id === currentLessonId) {
-    return "in_progress";
+  const saved = progress.lessonExchangeProgress[lesson.id];
+  if (saved) {
+    return {
+      completedExchanges: Math.min(saved.completedExchanges, totalExchanges),
+      totalExchanges,
+    };
   }
 
-  return "locked";
-}
-
-function getCurrentLessonId(
-  languageCode: LanguageCode,
-  completedLessonIds: string[],
-): string | null {
-  const lessons = getLessonsByLanguageCode(languageCode);
-  const nextLesson = lessons.find(
-    (lesson) => !completedLessonIds.includes(lesson.id),
-  );
-
-  return nextLesson?.id ?? null;
+  return { completedExchanges: 0, totalExchanges };
 }
 
 function buildQuickReview(
@@ -148,6 +121,7 @@ export function getLearnScreenData(
   progress: {
     completedLessonIds: string[];
     lessonProgressPercent: Record<string, number>;
+    lessonExchangeProgress: Record<string, LessonExchangeProgress>;
   },
 ): LearnScreenData | null {
   const language = getLanguageByCode(languageCode);
@@ -155,31 +129,40 @@ export function getLearnScreenData(
     return null;
   }
 
-  const effectiveProgress = getEffectiveProgress(
+  const effectiveProgress = getEffectiveProgressForLanguage(
     languageCode,
     progress.completedLessonIds,
     progress.lessonProgressPercent,
+    progress.lessonExchangeProgress,
   );
 
   const unit = getActiveUnit(languageCode, effectiveProgress.completedLessonIds);
   const unitLessons = getLessonsByUnitId(unit.id);
   const allLessons = getLessonsByLanguageCode(languageCode);
-  const currentLessonId = getCurrentLessonId(
-    languageCode,
-    effectiveProgress.completedLessonIds,
-  );
 
-  const buildLessonListItem = (lesson: Lesson): LessonListItem => ({
-    lesson,
-    status: getLessonVisualStatus(
+  const progressSnapshot: LessonProgressSnapshot = {
+    completedLessonIds: effectiveProgress.completedLessonIds,
+    lessonProgressPercent: effectiveProgress.lessonProgressPercent,
+    lessonExchangeProgress: effectiveProgress.lessonExchangeProgress,
+  };
+
+  const buildLessonListItem = (lesson: Lesson): LessonListItem => {
+    const exchangeCounts = getExchangeCountsForLesson(
       lesson,
-      effectiveProgress.completedLessonIds,
-      currentLessonId,
-    ),
-    progressPercent: effectiveProgress.completedLessonIds.includes(lesson.id)
-      ? 100
-      : (effectiveProgress.lessonProgressPercent[lesson.id] ?? 0),
-  });
+      language.name,
+      progressSnapshot,
+    );
+
+    return {
+      lesson,
+      status: getLessonVisualStatus(lesson, languageCode, progressSnapshot),
+      progressPercent: isLessonCompleted(lesson.id, progressSnapshot)
+        ? 100
+        : (effectiveProgress.lessonProgressPercent[lesson.id] ?? 0),
+      completedExchanges: exchangeCounts.completedExchanges,
+      totalExchanges: exchangeCounts.totalExchanges,
+    };
+  };
 
   const lessons: LessonListItem[] = unitLessons.map(buildLessonListItem);
 

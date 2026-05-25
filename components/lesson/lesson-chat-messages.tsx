@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Image } from "expo-image";
-import { Pressable, Text, View } from "react-native";
+import type { ReactNode } from "react";
+import { Text, View } from "react-native";
 
 import { images } from "@/constants/images";
 import {
@@ -8,15 +9,14 @@ import {
   LESSON_USER_BUBBLE,
   lessonSpacing,
 } from "@/constants/lesson-spacing";
-import type { ConversationExchange } from "@/lib/lesson-screen-data";
+import type { LessonTranscriptMessage } from "@/types/lesson-transcript";
 
 type LessonChatMessagesProps = {
-  completedExchanges: ConversationExchange[];
-  currentExchange?: ConversationExchange;
-  showCurrentUserMessage: boolean;
-  onHintPress?: () => void;
-  onListenPress?: () => void;
+  transcriptMessages: LessonTranscriptMessage[];
+  isTeacherSpeaking: boolean;
 };
+
+const SPEAKING_LINE_WIDTHS = ["72%", "58%", "64%"] as const;
 
 function MascotAvatar() {
   return (
@@ -33,15 +33,7 @@ function MascotAvatar() {
   );
 }
 
-function AiPromptCard({
-  exchange,
-  onHintPress,
-  onListenPress,
-}: {
-  exchange: ConversationExchange;
-  onHintPress?: () => void;
-  onListenPress?: () => void;
-}) {
+function AiTeacherBubbleShell({ children }: { children: ReactNode }) {
   return (
     <View className="flex-row" style={{ gap: 10 }}>
       <MascotAvatar />
@@ -56,78 +48,60 @@ function AiPromptCard({
           ...LESSON_CARD_SHADOW,
         }}
       >
-        <View className="flex-row items-start justify-between">
-          <View className="flex-row items-center" style={{ gap: 6 }}>
-            <Text
-              className="text-deep-navy"
-              style={{
-                fontFamily: "Poppins_500Medium",
-                fontSize: 13,
-                lineHeight: 18,
-              }}
-            >
-              AI Teacher
-            </Text>
-          </View>
-
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Listen to prompt"
-            onPress={onListenPress}
-            className="active:opacity-70"
-            hitSlop={6}
-          >
-            <Ionicons name="volume-high-outline" size={20} color="#ff7a00" />
-          </Pressable>
-        </View>
-
         <Text
           className="text-deep-navy"
           style={{
-            fontFamily: "Poppins_600SemiBold",
-            fontSize: 16,
-            lineHeight: 22,
-            marginTop: 10,
-          }}
-        >
-          {exchange.aiPrompt}
-        </Text>
-
-        <Text
-          className="text-secondary"
-          style={{
-            fontFamily: "Poppins_400Regular",
+            fontFamily: "Poppins_500Medium",
             fontSize: 13,
             lineHeight: 18,
-            marginTop: 4,
           }}
         >
-          Try saying it out loud! I&apos;m listening.
+          AI Teacher
         </Text>
-
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Need a hint"
-          onPress={onHintPress}
-          className="self-start active:opacity-70"
-          style={{ marginTop: 12 }}
-        >
-          <View className="flex-row items-center" style={{ gap: 6 }}>
-            {/* <Ionicons name="bulb-outline" size={16} color="#ff7a00" /> */}
-            <Text
-              className="text-foxi-orange"
-              style={{
-                fontFamily: "Poppins_500Medium",
-                fontSize: 13,
-                lineHeight: 18,
-              }}
-            >
-              Need a hint?
-            </Text>
-          </View>
-        </Pressable>
+        {children}
       </View>
     </View>
+  );
+}
+
+function AiSpeakingIndicator() {
+  return (
+    <AiTeacherBubbleShell>
+      <View
+        accessibilityLabel="Foxi is speaking"
+        style={{ gap: 6, marginTop: 10 }}
+      >
+        {SPEAKING_LINE_WIDTHS.map((width) => (
+          <View
+            key={width}
+            style={{
+              width,
+              height: 3,
+              borderRadius: 999,
+              backgroundColor: "#D1D5DB",
+            }}
+          />
+        ))}
+      </View>
+    </AiTeacherBubbleShell>
+  );
+}
+
+function AiTranscriptBubble({ text }: { text: string }) {
+  return (
+    <AiTeacherBubbleShell>
+      <Text
+        className="text-deep-navy"
+        style={{
+          fontFamily: "Poppins_400Regular",
+          fontSize: 15,
+          lineHeight: 22,
+          marginTop: 8,
+        }}
+      >
+        {text}
+      </Text>
+    </AiTeacherBubbleShell>
   );
 }
 
@@ -180,34 +154,42 @@ function UserMessageBubble({ text }: { text: string }) {
   );
 }
 
+function getVisibleMessages(
+  transcriptMessages: LessonTranscriptMessage[],
+  isTeacherSpeaking: boolean,
+): LessonTranscriptMessage[] {
+  if (!isTeacherSpeaking || transcriptMessages.length === 0) {
+    return transcriptMessages;
+  }
+
+  const lastMessage = transcriptMessages[transcriptMessages.length - 1];
+  if (lastMessage.role !== "ai") {
+    return transcriptMessages;
+  }
+
+  return transcriptMessages.slice(0, -1);
+}
+
 export function LessonChatMessages({
-  completedExchanges,
-  currentExchange,
-  showCurrentUserMessage,
-  onHintPress,
-  onListenPress,
+  transcriptMessages,
+  isTeacherSpeaking,
 }: LessonChatMessagesProps) {
+  const visibleMessages = getVisibleMessages(
+    transcriptMessages,
+    isTeacherSpeaking,
+  );
+
   return (
     <View style={{ gap: lessonSpacing.chatGap }}>
-      {completedExchanges.map((exchange) => (
-        <View key={exchange.id} style={{ gap: lessonSpacing.chatGap }}>
-          <AiPromptCard exchange={exchange} />
-          <UserMessageBubble text={exchange.userResponse} />
-        </View>
-      ))}
+      {visibleMessages.map((message) =>
+        message.role === "ai" ? (
+          <AiTranscriptBubble key={message.id} text={message.text} />
+        ) : (
+          <UserMessageBubble key={message.id} text={message.text} />
+        ),
+      )}
 
-      {currentExchange ? (
-        <View style={{ gap: lessonSpacing.chatGap }}>
-          <AiPromptCard
-            exchange={currentExchange}
-            onHintPress={onHintPress}
-            onListenPress={onListenPress}
-          />
-          {showCurrentUserMessage ? (
-            <UserMessageBubble text={currentExchange.userResponse} />
-          ) : null}
-        </View>
-      ) : null}
+      {isTeacherSpeaking ? <AiSpeakingIndicator /> : null}
     </View>
   );
 }

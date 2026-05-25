@@ -1,0 +1,24 @@
+[project]
+name = "foxi-vision-agent"
+version = "0.1.0"
+description = "Foxi AI language teacher — voice-only Vision Agent on Stream Edge + OpenAI Realtime"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+  "vision-agents[getstream,openai]>=0.1.0",
+  "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+foxi-agent = "foxi_teacher.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["foxi_teacher"]
+
+[tool.uv]
+# onnxruntime 1.24+ dropped macOS x86_64 wheels; pin for Intel Mac dev machines.
+override-dependencies = ["onnxruntime>=1.16.1,<1.24"]
