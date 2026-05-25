@@ -27,12 +27,12 @@ export const learnSpacing = {
   lessonCardRadius: 16,
   lessonCardPadding: learnSpace.sm,
   lessonIconSize: 44,
-  lessonIconRadius: 12,
+  lessonIconRadius: 8,
   heroBannerHeight: 140,
   heroBannerRadius: 20,
   reviewCardWidth: 132,
   reviewCardGap: learnSpace.sm,
-  reviewCardRadius: 16,
+  reviewCardRadius: learnSpace.xs,
   reviewCardPadding: learnSpace.sm,
   statusIconSize: 28,
   progressBarHeight: 6,
@@ -41,7 +41,7 @@ export const learnSpacing = {
 export const LEARN_CARD_SHADOW = {
   shadowColor: "#ff7a00",
   shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.2,
+  shadowOpacity: 0.1,
   shadowRadius: 4,
   elevation: 3,
 } as const;

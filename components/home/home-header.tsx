@@ -43,27 +43,26 @@ export function HomeHeader({
             className="flex-row items-center active:opacity-70"
             style={{
               height: homeSpacing.notificationButtonSize,
-              paddingHorizontal: homeSpace.xs,
               gap: 2,
             }}
             hitSlop={homeSpace.xs}
           >
             <Text
-              className="text-foxi-orange"
+              className="text-deep-navy"
               style={{
-                fontFamily: "Poppins_600SemiBold",
+                fontFamily: "Poppins_500Medium",
                 fontSize: 14,
               }}
             >
               {languageName}
             </Text>
-            <Ionicons name="chevron-down" size={16} color="#ff7a00" />
+            <Ionicons name="chevron-down" size={16} color="#0d132b" />
           </Pressable>
         ) : null}
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Notifications"
-          className="items-center justify-center bg-white active:opacity-80"
+          className="items-center justify-center active:opacity-80"
           style={headerActionButtonStyle}
         >
           <Ionicons name="notifications-outline" size={22} color="#0d132b" />

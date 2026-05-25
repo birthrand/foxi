@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 
-import { HOME_CARD_SHADOW, homeSpacing } from "@/constants/home-spacing";
+import { homeSpacing, RECENT_VOCAB_SHADOW } from "@/constants/home-spacing";
 import type { RecentVocabularyItem } from "@/lib/home-data";
 
 type HomeRecentVocabularyCardProps = {
@@ -8,7 +8,7 @@ type HomeRecentVocabularyCardProps = {
   onItemPress?: (item: RecentVocabularyItem) => void;
 };
 
-const CARD_BACKGROUND = "#FFF9F2";
+const CARD_BACKGROUND = "#FFF0E6";
 const ROW_BACKGROUND = "#FFF0E6";
 const FOXI_ORANGE = "#ff7a00";
 const DIVIDER_COLOR = "#E5E7EB";
@@ -80,7 +80,7 @@ export function HomeRecentVocabularyCard({
         borderRadius: homeSpacing.vocabCardRadius,
         backgroundColor: CARD_BACKGROUND,
         padding: homeSpacing.vocabCardPadding,
-        ...HOME_CARD_SHADOW,
+        ...RECENT_VOCAB_SHADOW,
       }}
     >
       <View style={{ gap: homeSpacing.vocabRowGap }}>

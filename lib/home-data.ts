@@ -11,10 +11,14 @@ export type FocusPlanType = "lesson" | "ai-conversation" | "new-words";
 
 export type FocusItem = {
   id: string;
+  lessonId: string;
   category: string;
-  topic: string;
+  headline: string;
+  subtitle: string;
   planType: FocusPlanType;
   completed: boolean;
+  progressPercent: number;
+  wordChips?: string[];
 };
 
 export type ContinueLearningItem = {
@@ -106,34 +110,68 @@ function getRecentVocabulary(
   }));
 }
 
-function buildTodaysPlan(lesson: Lesson, progressPercent: number): FocusItem[] {
+function getPlanSegmentProgress(
+  overallPercent: number,
+  segmentStart: number,
+  segmentEnd: number,
+): number {
+  if (overallPercent <= segmentStart) {
+    return 0;
+  }
+
+  if (overallPercent >= segmentEnd) {
+    return 100;
+  }
+
+  return Math.round(
+    ((overallPercent - segmentStart) / (segmentEnd - segmentStart)) * 100,
+  );
+}
+
+function buildTodaysPlan(
+  lesson: Lesson,
+  progressPercent: number,
+  unitNumber: number,
+): FocusItem[] {
   const conversationActivity =
     lesson.activities.find(
       (activity) =>
         activity.type === "conversation" || activity.type === "speaking",
     ) ?? lesson.activities.find((activity) => activity.type === "listening");
 
+  const wordChips = lesson.vocabulary.slice(0, 3).map((item) => item.word);
+
   return [
     {
       id: `${lesson.id}-plan-lesson`,
+      lessonId: lesson.id,
       category: "Lesson",
-      topic: lesson.subtitle,
+      headline: lesson.title,
+      subtitle: `Unit ${unitNumber} • ${lesson.estimatedMinutes} min`,
       planType: "lesson",
       completed: progressPercent >= 40,
+      progressPercent: getPlanSegmentProgress(progressPercent, 0, 40),
     },
     {
       id: `${lesson.id}-plan-conversation`,
+      lessonId: lesson.id,
       category: "AI Conversation",
-      topic: conversationActivity?.title ?? "Talk about your day",
+      headline: conversationActivity?.title ?? "Talk about your day",
+      subtitle: "Speaking practice • Live tutor",
       planType: "ai-conversation",
       completed: progressPercent >= 80,
+      progressPercent: getPlanSegmentProgress(progressPercent, 40, 80),
     },
     {
       id: `${lesson.id}-plan-words`,
+      lessonId: lesson.id,
       category: "New words",
-      topic: `${lesson.vocabulary.length} words`,
+      headline: `${lesson.vocabulary.length} words`,
+      subtitle: "Vocabulary review",
       planType: "new-words",
       completed: progressPercent >= 100,
+      progressPercent: getPlanSegmentProgress(progressPercent, 80, 100),
+      wordChips,
     },
   ];
 }
@@ -194,7 +232,11 @@ export function getHomeScreenData(
   return {
     language,
     continueLearning,
-    todaysFocus: buildTodaysPlan(currentLesson, progressPercent),
+    todaysFocus: buildTodaysPlan(
+      currentLesson,
+      progressPercent,
+      currentUnit?.number ?? 1,
+    ),
     recentVocabulary,
     stats,
   };

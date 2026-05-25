@@ -9,11 +9,11 @@ import { LessonRestartConfirmModal } from "@/components/learn/lesson-restart-con
 import { LessonTimelineList } from "@/components/learn/lesson-timeline-list";
 import { QuickReviewSection } from "@/components/learn/quick-review-section";
 import { learnSpacing } from "@/constants/learn-spacing";
-import { getLearnScreenData } from "@/lib/learn-data";
-import { getTotalConversationExchanges } from "@/lib/lesson-screen-data";
 import { getLanguageByCode } from "@/data/languages";
 import { getLessonById } from "@/data/lessons";
+import { getLearnScreenData } from "@/lib/learn-data";
 import { isLessonAccessible } from "@/lib/lesson-access";
+import { getTotalConversationExchanges } from "@/lib/lesson-screen-data";
 import { useSelectedLanguageCode } from "@/store/language-store";
 import {
   useLearningProgressHydrated,

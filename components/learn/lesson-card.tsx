@@ -35,13 +35,13 @@ function StatusAction({ item }: { item: LessonListItem }) {
       <View
         className="items-center justify-center"
         style={{
-          width: learnSpacing.statusIconSize,
-          height: learnSpacing.statusIconSize,
+          width: learnSpacing.statusIconSize +4,
+          height: learnSpacing.statusIconSize +4,
           borderRadius: learnSpacing.statusIconSize / 2,
-          backgroundColor: "#ff7a00",
+          backgroundColor: "",
         }}
       >
-        <Ionicons name="arrow-forward" size={18} color="#FFFFFF" />
+        <Ionicons name="arrow-forward-circle" size={32} color="#ff7a00" />
       </View>
     );
   }
@@ -92,38 +92,38 @@ export function LessonCard({ item, onPress }: LessonCardProps) {
       }}
     >
       <View className="flex-row items-start" style={{ gap: 10 }}>
-        <View
+        {/* <View
           accessibilityLabel={`${lesson.title} chat lesson`}
           className="items-center justify-center"
           style={{
             width: learnSpacing.lessonIconSize,
             height: learnSpacing.lessonIconSize,
             borderRadius: learnSpacing.lessonIconRadius,
-            backgroundColor: isActive ? "#FFE8D4" : "#F3F4F6",
+            backgroundColor: isActive ? "rgba(255, 232, 212, 0)" : "",
             opacity: isLocked ? 0.55 : 1,
           }}
         >
           <Ionicons
-            name="chatbubble-ellipses-outline"
+            name="headset-outline"
             size={22}
             color={isLocked ? "#94A3B8" : "#ff7a00"}
           />
-        </View>
+        </View> */}
 
         <View className="min-w-0 flex-1">
           <Text
             className="text-deep-navy"
             style={{
               fontFamily: "Poppins_600SemiBold",
-              fontSize: 14,
-              lineHeight: 18,
+              fontSize: 16,
+              lineHeight: 22,
               opacity: isLocked ? 0.55 : 1,
             }}
             numberOfLines={1}
           >
             {lesson.title}
           </Text>
-          <Text
+          {/* <Text
             className="text-secondary"
             style={{
               fontFamily: "Poppins_400Regular",
@@ -135,7 +135,7 @@ export function LessonCard({ item, onPress }: LessonCardProps) {
             numberOfLines={1}
           >
             {lesson.description}
-          </Text>
+          </Text> */}
           <Text
             className="text-secondary"
             style={{

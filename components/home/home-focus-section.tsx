@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import { useMemo } from "react";
+import { ScrollView, useWindowDimensions, View } from "react-native";
 
 import { HomeFocusCard } from "@/components/home/home-focus-card";
 import { HomeSectionHeader } from "@/components/home/home-section-header";
@@ -7,31 +8,54 @@ import type { FocusItem } from "@/lib/home-data";
 
 type HomeFocusSectionProps = {
   items: FocusItem[];
-  onSeeAll?: () => void;
+  onItemPress?: (item: FocusItem) => void;
 };
 
-const PLAN_PURPLE = "#ff7a00";
+export function HomeFocusSection({
+  items,
+  onItemPress,
+}: HomeFocusSectionProps) {
+  const { width: screenWidth } = useWindowDimensions();
 
-export function HomeFocusSection({ items, onSeeAll }: HomeFocusSectionProps) {
+  const cardWidth = useMemo(
+    () => Math.min(280, Math.round(screenWidth * 0.72)),
+    [screenWidth],
+  );
+
+  const snapInterval =
+    cardWidth + homeSpacing.focusStreamingCardGap + homeSpacing.screenPadding;
+
   return (
     <View style={{ marginTop: homeSpacing.continueToFocus }}>
-      <HomeSectionHeader
-        title="Today's plan"
-        onSeeAll={onSeeAll}
-        seeAllLabel="View all"
-        seeAllColor={PLAN_PURPLE}
-      />
+      <HomeSectionHeader title="Today's plan" titleFontSize={16} />
 
-      <View
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        decelerationRate="fast"
+        snapToInterval={snapInterval}
+        snapToAlignment="start"
+        contentContainerStyle={{
+          paddingTop: homeSpacing.sectionHeaderToCards,
+          paddingRight: homeSpacing.screenPadding,
+          gap: homeSpacing.focusStreamingCardGap,
+        }}
         style={{
-          marginTop: homeSpacing.sectionHeaderToCards,
-          gap: homeSpacing.focusCardGap,
+          marginHorizontal: -homeSpacing.screenPadding,
+          paddingLeft: homeSpacing.screenPadding,
         }}
       >
         {items.map((item) => (
-          <HomeFocusCard key={item.id} item={item} />
+          <HomeFocusCard
+            key={item.id}
+            item={item}
+            width={cardWidth}
+            onPress={
+              onItemPress ? () => onItemPress(item) : undefined
+            }
+          />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }

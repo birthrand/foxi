@@ -26,12 +26,12 @@ export function LanguageCard({
         padding: languageSelectionSpacing.cardPadding,
         borderRadius: languageSelectionSpacing.cardRadius,
         borderCurve: "continuous",
-        backgroundColor: isSelected ? "#FFF3E0" : "#ffffff",
+        backgroundColor: isSelected ? "#FFF3E0" : "rgba(255, 255, 255, 0.5)",
         borderWidth: isSelected ? 2 : 0,
         borderColor: isSelected ? "#ff7a00" : "transparent",
         boxShadow: isSelected
           ? "none"
-          : "0 2px 8px rgba(13, 19, 43, 0.08)",
+          : "0 2px 8px rgba(13, 19, 43, 0.02)",
       }}
     >
       <View

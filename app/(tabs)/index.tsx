@@ -11,6 +11,7 @@ import { HomeRecentVocabularySection } from "@/components/home/home-recent-vocab
 import { HomeStatRow } from "@/components/home/home-stat-row";
 import { homeSpacing } from "@/constants/home-spacing";
 import { getLanguageByCode } from "@/data/languages";
+import type { FocusItem } from "@/lib/home-data";
 import {
   getGreetingForTime,
   getHomeScreenData,
@@ -118,8 +119,11 @@ export default function HomeScreen() {
     router.push("/learn");
   };
 
-  const handleSeeAllFocus = () => {
-    router.push("/learn");
+  const handleFocusItemPress = (item: FocusItem) => {
+    router.push({
+      pathname: "/lesson/[id]",
+      params: { id: item.lessonId },
+    });
   };
 
   const handleSeeAllVocabulary = () => {
@@ -168,7 +172,7 @@ export default function HomeScreen() {
         />
         <HomeFocusSection
           items={homeData.todaysFocus}
-          onSeeAll={handleSeeAllFocus}
+          onItemPress={handleFocusItemPress}
         />
 
         {homeData.recentVocabulary.length > 0 ? (
