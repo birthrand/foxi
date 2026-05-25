@@ -4,11 +4,6 @@ import type { ReactNode } from "react";
 import { Text, View } from "react-native";
 
 import { images } from "@/constants/images";
-import {
-  LESSON_CARD_SHADOW,
-  LESSON_USER_BUBBLE,
-  lessonSpacing,
-} from "@/constants/lesson-spacing";
 import type { LessonTranscriptMessage } from "@/types/lesson-transcript";
 
 type LessonChatMessagesProps = {
@@ -23,11 +18,7 @@ function MascotAvatar() {
     <Image
       source={images.mascotProfile}
       accessibilityLabel="Foxi AI Teacher"
-      style={{
-        width: lessonSpacing.chatAvatarSize,
-        height: lessonSpacing.chatAvatarSize,
-        borderRadius: lessonSpacing.chatAvatarSize / 2,
-      }}
+      className="size-10 rounded-full"
       contentFit="cover"
     />
   );
@@ -35,27 +26,10 @@ function MascotAvatar() {
 
 function AiTeacherBubbleShell({ children }: { children: ReactNode }) {
   return (
-    <View className="flex-row" style={{ gap: 10 }}>
+    <View className="flex-row gap-2.5">
       <MascotAvatar />
-      <View
-        className="flex-1"
-        style={{
-          borderRadius: lessonSpacing.cardRadius,
-          backgroundColor: "#FFFFFF",
-          padding: lessonSpacing.cardPadding,
-          borderWidth: 1,
-          borderColor: "#F3F4F6",
-          ...LESSON_CARD_SHADOW,
-        }}
-      >
-        <Text
-          className="text-deep-navy"
-          style={{
-            fontFamily: "Poppins_500Medium",
-            fontSize: 13,
-            lineHeight: 18,
-          }}
-        >
+      <View className="flex-1 rounded-[20px] border border-gray-100 bg-white p-4 shadow-[0px_2px_8px_rgba(13,19,43,0.08)]">
+        <Text className="font-poppins-medium text-[13px] leading-[18px] text-deep-navy">
           AI Teacher
         </Text>
         {children}
@@ -69,17 +43,13 @@ function AiSpeakingIndicator() {
     <AiTeacherBubbleShell>
       <View
         accessibilityLabel="Foxi is speaking"
-        style={{ gap: 6, marginTop: 10 }}
+        className="mt-2.5 gap-1.5"
       >
         {SPEAKING_LINE_WIDTHS.map((width) => (
           <View
             key={width}
-            style={{
-              width,
-              height: 3,
-              borderRadius: 999,
-              backgroundColor: "#D1D5DB",
-            }}
+            className="h-[3px] rounded-full bg-gray-300"
+            style={{ width }}
           />
         ))}
       </View>
@@ -90,15 +60,7 @@ function AiSpeakingIndicator() {
 function AiTranscriptBubble({ text }: { text: string }) {
   return (
     <AiTeacherBubbleShell>
-      <Text
-        className="text-deep-navy"
-        style={{
-          fontFamily: "Poppins_400Regular",
-          fontSize: 15,
-          lineHeight: 22,
-          marginTop: 8,
-        }}
-      >
+      <Text className="mt-2 font-poppins text-[15px] leading-[22px] text-deep-navy">
         {text}
       </Text>
     </AiTeacherBubbleShell>
@@ -113,38 +75,12 @@ function UserMessageBubble({ text }: { text: string }) {
 
   return (
     <View className="items-end">
-      <View
-        style={{
-          maxWidth: "82%",
-          borderRadius: 18,
-          borderBottomRightRadius: 6,
-          backgroundColor: LESSON_USER_BUBBLE,
-          paddingHorizontal: 14,
-          paddingVertical: 10,
-        }}
-      >
-        <Text
-          className="text-deep-navy"
-          style={{
-            fontFamily: "Poppins_400Regular",
-            fontSize: 14,
-            lineHeight: 20,
-          }}
-        >
+      <View className="max-w-[82%] rounded-[18px] rounded-br-[6px] bg-[#FFF1E6] px-3.5 py-2.5">
+        <Text className="font-poppins text-[14px] leading-[20px] text-deep-navy">
           {text}
         </Text>
-        <View
-          className="flex-row items-center justify-end"
-          style={{ gap: 4, marginTop: 4 }}
-        >
-          <Text
-            className="text-secondary"
-            style={{
-              fontFamily: "Poppins_400Regular",
-              fontSize: 11,
-              lineHeight: 14,
-            }}
-          >
+        <View className="mt-1 flex-row items-center justify-end gap-1">
+          <Text className="font-poppins text-[11px] leading-[14px] text-secondary">
             {timestamp}
           </Text>
           <Ionicons name="checkmark-done" size={14} color="#3b82f6" />
@@ -180,7 +116,7 @@ export function LessonChatMessages({
   );
 
   return (
-    <View style={{ gap: lessonSpacing.chatGap }}>
+    <View className="gap-2.5">
       {visibleMessages.map((message) =>
         message.role === "ai" ? (
           <AiTranscriptBubble key={message.id} text={message.text} />

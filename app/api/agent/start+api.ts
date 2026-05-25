@@ -1,14 +1,14 @@
 import { getLessonWithLanguage } from "@/data/lessons";
 import { getAuthenticatedClerkUserId } from "@/lib/clerk-server-auth";
-import { fetchStreamCallLessonCustom } from "@/lib/stream-call-custom";
-import { buildStreamLessonCallCustom } from "@/lib/stream-lesson-custom";
 import { parseStreamCallId } from "@/lib/stream";
+import { fetchStreamCallLessonCustom } from "@/lib/stream-call-custom";
+import type { StreamLessonCallCustom } from "@/lib/stream-lesson-custom";
+import { buildStreamLessonCallCustom } from "@/lib/stream-lesson-custom";
 import { getStreamServerConfigError } from "@/lib/stream-server";
 import {
   getVisionAgentConfigError,
   visionAgentFetch,
 } from "@/lib/vision-agent-server";
-import type { StreamLessonCallCustom } from "@/lib/stream-lesson-custom";
 
 type StartAgentBody = {
   callId?: string;
@@ -94,14 +94,14 @@ export async function POST(request: Request) {
     if (!lessonCustom) {
       lessonCustom = resolveLessonCustomForCall(callId, callType);
     }
-
+    const callLogId = `${callId.slice(0, 12)}…`;
     if (lessonCustom) {
       console.info(
-        `Starting vision agent for ${callId} (${lessonCustom.languageCode} — ${lessonCustom.lessonTitle})`,
+       `Starting vision agent for ${callLogId} (${lessonCustom.languageCode} — ${lessonCustom.lessonTitle})`,
       );
     } else {
       console.warn(
-        `Starting vision agent for ${callId} without lesson custom; agent will use defaults`,
+        `Starting vision agent for ${callLogId} without lesson custom; agent will use defaults`,
       );
     }
 

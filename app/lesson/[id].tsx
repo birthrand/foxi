@@ -1,12 +1,12 @@
 import { getLessonById, getLessonWithLanguage } from "@/data/lessons";
+import { getNextLessonInPath } from "@/lib/language-progress";
+import { isLessonAccessible } from "@/lib/lesson-access";
 import {
   countCompletedConversationExchanges,
   hasCompletedAllConversationExchanges,
   isConversationLessonComplete,
 } from "@/lib/lesson-conversation-progress";
 import { getLessonScreenData } from "@/lib/lesson-screen-data";
-import { isLessonAccessible } from "@/lib/lesson-access";
-import { getNextLessonInPath } from "@/lib/language-progress";
 import { useSelectedLanguageCode } from "@/store/language-store";
 import { useLearningProgressStore } from "@/store/learning-progress-store";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -88,6 +88,8 @@ export default function LessonDetailScreen() {
     selectedLanguageCode,
   ]);
 
+  const canStartLessonSession = Boolean(lesson && !isLessonLocked);
+
   const streakDays = useLearningProgressStore((state) => state.streakDays);
   const setLessonExchangeProgress = useLearningProgressStore(
     (state) => state.setLessonExchangeProgress,
@@ -102,7 +104,7 @@ export default function LessonDetailScreen() {
   );
 
   const streamLesson = useStreamAudioLesson({
-    enabled: Boolean(lesson),
+    enabled: canStartLessonSession,
     lessonId: lesson?.id ?? "",
     languageCode: lesson?.languageCode ?? selectedLanguageCode ?? "es",
     lessonTitle: lesson?.title ?? "",
@@ -110,7 +112,7 @@ export default function LessonDetailScreen() {
   });
 
   const visionAgent = useVisionAgent({
-    enabled: Boolean(streamLesson.callSession),
+    enabled: Boolean(canStartLessonSession && streamLesson.callSession),
     callId: streamLesson.callSession?.callId ?? null,
     callType: streamLesson.callSession?.callType ?? null,
     lessonCustom: streamLesson.callSession?.lessonCustom ?? null,

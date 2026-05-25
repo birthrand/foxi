@@ -7,6 +7,8 @@ type HomeSectionHeaderProps = {
   onSeeAll?: () => void;
   seeAllLabel?: string;
   seeAllColor?: string;
+  titleFontSize?: number;
+  seeAllFontSize?: number;
 };
 
 export function HomeSectionHeader({
@@ -14,15 +16,20 @@ export function HomeSectionHeader({
   onSeeAll,
   seeAllLabel = "View all",
   seeAllColor = "#ff7a00",
+  titleFontSize = 16,
+  seeAllFontSize = 14,
 }: HomeSectionHeaderProps) {
   return (
-    <View className="flex-row items-center justify-between">
+    <View className="flex-row items-center justify-between -mb-2">
       <Text
-        className="text-deep-navy"
+        className="text-secondary"
         style={{
-          fontFamily: "Poppins_500Medium",
-          fontSize: 16,
-          lineHeight: 22,
+          fontFamily:
+            titleFontSize >= 20
+              ? "Poppins_600SemiBold"
+              : "Poppins_500Medium",
+          fontSize: titleFontSize,
+          lineHeight: titleFontSize + 6,
         }}
       >
         {title}
@@ -39,7 +46,7 @@ export function HomeSectionHeader({
           <Text
             style={{
               fontFamily: "Poppins_500Medium",
-              fontSize: 14,
+              fontSize: seeAllFontSize,
               color: seeAllColor,
             }}
           >

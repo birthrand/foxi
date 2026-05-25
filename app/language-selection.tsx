@@ -81,12 +81,12 @@ export default function LanguageSelectionScreen() {
               onPress={() => router.back()}
               accessibilityRole="button"
               accessibilityLabel="Go back"
-              className="items-center justify-center bg-white"
+              className="items-center justify-center"
               style={{
                 width: languageSelectionSpacing.backButtonSize,
                 height: languageSelectionSpacing.backButtonSize,
-                borderRadius: languageSelectionSpacing.backButtonSize / 2,
-                boxShadow: "0 2px 8px rgba(13, 19, 43, 0.1)",
+                // borderRadius: languageSelectionSpacing.backButtonSize / 2,
+                // boxShadow: "0 2px 8px rgba(13, 19, 43, 0.1)",
               }}
             >
               <Ionicons name="chevron-back" size={22} color="#0d132b" />
@@ -103,11 +103,14 @@ export default function LanguageSelectionScreen() {
           </View>
 
           <View
-            className="mt-6 flex-row items-center bg-white px-4"
+            className="mt-6 flex-row items-center px-4"
             style={{
               height: languageSelectionSpacing.searchHeight,
-              borderRadius: languageSelectionSpacing.searchRadius,
-              boxShadow: "0 2px 8px rgba(13, 19, 43, 0.08)",
+              borderWidth: 1,
+              backgroundColor: "rgba(255, 255, 255, 0.5)",
+              borderColor: "rgba(0, 0, 0, 0.2)",
+              borderRadius: 8,
+              // boxShadow: "0 2px 8px rgba(13, 19, 43, 0.08)",
             }}
           >
             <Ionicons name="search" size={20} color="#94A3B8" />

@@ -8,7 +8,7 @@ export const homeSpace = {
 } as const;
 
 export const homeSpacing = {
-  screenPadding: homeSpace.md,
+  screenPadding: homeSpace.sm,
   screenBackground: "#FFFBF5",
   headerToStats: homeSpace.sm,
   headerTitleToSubtitle: homeSpace.xs - 2,
@@ -23,6 +23,10 @@ export const homeSpacing = {
   statChipPaddingV: homeSpace.xs,
   statStreakOffset: homeSpace.xs,
   focusCardGap: homeSpace.sm,
+  focusStreamingCardGap: homeSpace.sm,
+  focusStreamingCardHeight: 200,
+  focusStreamingCardRadius: homeSpace.xs,
+  focusStreamingCardPadding: homeSpace.sm,
   focusIconToText: homeSpace.sm,
   focusCategoryToTopic: 0,
   continueCardMinHeight: 168,
@@ -35,16 +39,16 @@ export const homeSpacing = {
   continueButtonMarginLeft: homeSpace.sm,
   continueButtonMarginBottom: homeSpace.sm,
   continueButtonHeight: 48,
-  vocabCardRadius: homeSpace.md,
+  vocabCardRadius: homeSpace.xs,
   vocabCardPadding: homeSpace.sm,
   vocabRowGap: homeSpace.xs,
   vocabRowRadius: homeSpace.sm,
   vocabRowPaddingV: homeSpace.sm,
   vocabRowPaddingH: homeSpace.sm,
   vocabDividerMarginH: homeSpace.sm,
-  cardRadius: 20,
-  statChipRadius: homeSpace.sm,
-  notificationRadius: homeSpace.sm,
+  cardRadius: homeSpace.xs,
+  statChipRadius: homeSpace.xs,
+  notificationRadius: homeSpace.xs,
   notificationDotOffset: homeSpace.xs,
   focusCardWidth: 140,
   thumbnailSize: 88,
@@ -60,7 +64,15 @@ export const homeSpacing = {
 export const HOME_CARD_SHADOW = {
   shadowColor: "#0d132b",
   shadowOffset: { width: 0, height: 1.5 },
-  shadowOpacity: 0.3,
+  shadowOpacity: 0.2,
+  shadowRadius: 2,
+  elevation: 4,
+} as const;
+
+export const RECENT_VOCAB_SHADOW = {
+  shadowColor: "#0d132b",
+  shadowOffset: { width: 0, height: 1.5 },
+  shadowOpacity: 0.1,
   shadowRadius: 2,
   elevation: 4,
 } as const;

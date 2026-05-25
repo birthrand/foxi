@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 
 import { LessonCard } from "@/components/learn/lesson-card";
 import { LessonTimelineNode } from "@/components/learn/lesson-timeline-node";
-import { learnSpace, learnSpacing, getLessonRowMinHeight } from "@/constants/learn-spacing";
+import { getLessonRowMinHeight, learnSpace, learnSpacing } from "@/constants/learn-spacing";
 import type { LearnUnitSection as LearnUnitSectionData } from "@/lib/learn-data";
 
 type LearnUnitSectionProps = {
@@ -27,14 +27,14 @@ export function LearnUnitSection({
           <Text
             className="text-deep-navy"
             style={{
-              fontFamily: "Poppins_600SemiBold",
+              fontFamily: "Poppins_500Medium",
               fontSize: 15,
               lineHeight: 20,
             }}
           >
             Unit {unit.number} · {unit.title}
           </Text>
-          <Text
+          {/* <Text
             className="text-secondary"
             style={{
               fontFamily: "Poppins_400Regular",
@@ -45,7 +45,7 @@ export function LearnUnitSection({
             numberOfLines={2}
           >
             {unit.description}
-          </Text>
+          </Text> */}
         </View>
 
         <View
@@ -60,10 +60,10 @@ export function LearnUnitSection({
         >
           <Text
             style={{
-              fontFamily: "Poppins_600SemiBold",
+              fontFamily: "Poppins_400Regular",
               fontSize: 11,
               lineHeight: 14,
-              color: isUnitComplete ? "#16A34A" : "#ff7a00",
+              color: isUnitComplete ? "#16A34A" : "#64748B",
             }}
           >
             {completedCount}/{lessons.length}
