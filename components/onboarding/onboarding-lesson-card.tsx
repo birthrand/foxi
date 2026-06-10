@@ -22,7 +22,7 @@ export function OnboardingLessonCard() {
         <View className="h-10 w-10 items-center justify-center rounded-xl bg-info">
           <Ionicons name="book" size={20} color="#ffffff" />
         </View>
-        <View className="absolute -right-1 -top-1 h-4 w-4 items-center justify-center rounded-full bg-foxi-orange">
+        <View className="absolute -right-1 -top-1 h-4 w-4 items-center justify-center rounded-full bg-success">
           <Ionicons name="checkmark" size={10} color="#ffffff" />
         </View>
       </View>
