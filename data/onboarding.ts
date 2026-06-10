@@ -2,7 +2,7 @@ import type { ImageSourcePropType } from "react-native";
 
 import { images } from "@/constants/images";
 
-export type OnboardingBadgeIcon = "shield" | "star";
+export type OnboardingBadgeIcon = "shield";
 
 export type OnboardingSlide = {
   id: string;
@@ -48,7 +48,7 @@ export const onboardingSlides: OnboardingSlide[] = [
     titleLine2Orange: true,
     subtitleLines: [
       "We'll create a learning path that's",
-      "just right for you.",
+      "just right for you",
     ],
     illustration: images.mascotOnboarding3,
     illustrationVariant: "wide",

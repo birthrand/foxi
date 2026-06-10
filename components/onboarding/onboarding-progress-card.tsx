@@ -24,7 +24,7 @@ export function OnboardingProgressCard({
       >
         <View className="h-9 w-9 items-center justify-center rounded-full bg-foxi-orange">
           <MaterialCommunityIcons
-            name="star-four-points"
+            name="headphones"
             size={16}
             color="#ffffff"
           />

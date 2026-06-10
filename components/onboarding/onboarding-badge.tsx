@@ -12,10 +12,10 @@ type OnboardingBadgeProps = {
 
 export function OnboardingBadge({
   label,
-  icon = "star",
+  icon,
   compact = false,
 }: OnboardingBadgeProps) {
-  const iconName = icon === "shield" ? "shield-check" : "star-four-points";
+  const showIcon = icon === "shield";
 
   if (compact) {
     return (
@@ -24,10 +24,16 @@ export function OnboardingBadge({
         style={{
           height: onboardingSpacing.badgeHeight,
           paddingHorizontal: onboardingSpacing.badgePaddingH,
-          gap: onboardingSpacing.badgeIconGap,
+          gap: showIcon ? onboardingSpacing.badgeIconGap : 0,
         }}
       >
-        <MaterialCommunityIcons name={iconName} size={16} color="#ff7a00" />
+        {showIcon ? (
+          <MaterialCommunityIcons
+            name="shield-check"
+            size={16}
+            color="#ff7a00"
+          />
+        ) : null}
         <Text
           className="text-[12px] text-foxi-orange"
           style={{ fontFamily: "Poppins_600SemiBold" }}
@@ -40,7 +46,9 @@ export function OnboardingBadge({
 
   return (
     <View className="flex-row items-center gap-1.5 self-center rounded-full border border-[#FFC98A] bg-[#FFF0E3] px-3.5 py-1.5">
-      <MaterialCommunityIcons name={iconName} size={14} color="#ff7a00" />
+      {showIcon ? (
+        <MaterialCommunityIcons name="shield-check" size={14} color="#ff7a00" />
+      ) : null}
       <Text
         className="text-[12px] text-foxi-orange"
         style={{ fontFamily: "Poppins_600SemiBold" }}
