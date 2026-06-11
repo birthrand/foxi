@@ -18,17 +18,25 @@
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="assets/screenshots/fs1.PNG" alt="Sign up screen" width="260" />
+  <img src="assets/screenshots/fs2.PNG" alt="Home dashboard" width="260" />
+  <img src="assets/screenshots/fs3.PNG" alt="Learn path" width="260" />
+</p>
+
+<p align="center">
+  <sub><b>Sign up</b> · <b>Home</b> · <b>Learn path</b></sub>
+</p>
+
+---
+
 ## Overview
 
 **Foxi** is a mobile-first language learning experience that combines polished UI, structured lesson paths, and real-time AI tutoring. Users sign in, pick a language, follow a unit-based curriculum, and practice through vocabulary, listening, speaking, and live conversation activities — including audio sessions powered by Stream Video and an OpenAI Realtime vision agent.
 
 Built as a production-style Expo app with file-based routing, persistent local progress, and secure server-side API routes for third-party credentials.
-
-<p align="center">
-  <img src="assets/images/home/todays-plan-streaming-mockup.png" alt="Foxi home screen mockup" width="280" />
-</p>
-
-> **Tip for your portfolio:** Replace the mockup above with 2–3 real device screenshots in a `docs/screenshots/` folder for the strongest GitHub presentation.
 
 ---
 
@@ -128,7 +136,7 @@ foxi/
 ├── lib/                    # API clients, Clerk/Stream server helpers
 ├── store/                  # Zustand stores with AsyncStorage persistence
 ├── types/                  # Shared TypeScript types
-├── assets/                 # Mascot illustrations, icons, mockups
+├── assets/                 # Mascot illustrations, icons, screenshots
 └── vision-agent/           # Python AI teacher service
 ```
 
