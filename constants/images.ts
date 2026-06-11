@@ -17,7 +17,9 @@ import mascotOnboarding1 from "@/assets/images/mascot-onboarding-1.png";
 import mascotOnboarding2 from "@/assets/images/mascot-onboarding-2.png";
 import mascotOnboarding3 from "@/assets/images/mascot-onboarding-3.png";
 import mascotOnboarding4 from "@/assets/images/mascot-onboarding-4.png";
-import todaysPlanStreamingMockup from "@/assets/images/home/todays-plan-streaming-mockup.png";
+import screenshot1 from "@/assets/screenshots/fs1.PNG";
+import screenshot2 from "@/assets/screenshots/fs2.PNG";
+import screenshot3 from "@/assets/screenshots/fs3.PNG";
 import splashIcon from "@/assets/images/splash-icon.png";
 
 export const images = {
@@ -41,5 +43,10 @@ export const images = {
   mascotLessonTable,
   mascotLessonTable1,
   mascotProfile,
-  todaysPlanStreamingMockup,
+};
+
+export const screenshots = {
+  signUp: screenshot1,
+  home: screenshot2,
+  learnPath: screenshot3,
 };
